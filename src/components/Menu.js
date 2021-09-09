@@ -1,8 +1,5 @@
 import React from 'react';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,69 +9,28 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   paper: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(3),
+    width:"15%",
   },
+  item :{
+    height:"10vh"
+  }
 }));
 
-export default function MenuListComposition() {
+export default function Menu() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
-
-  const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
-
-    setOpen(false);
-  };
-
-  function handleListKeyDown(event) {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      setOpen(false);
-    }
-  }
-
-  // return focus to the button when we transitioned from !open -> open
-  const prevOpen = React.useRef(open);
-  React.useEffect(() => {
-    if (prevOpen.current === true && open === false) {
-      anchorRef.current.focus();
-    }
-
-    prevOpen.current = open;
-  }, [open]);
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <MenuList>
-          <MenuItem>Profile</MenuItem>
-          <MenuItem>My account</MenuItem>
-          <MenuItem>Logout</MenuItem>
+        <MenuList >
+          <MenuItem className={classes.item}>종목 관리</MenuItem>
+          <MenuItem className={classes.item}>팀/선수 관리</MenuItem>
+          <MenuItem className={classes.item}>NFT 관리</MenuItem>
+          <MenuItem className={classes.item}>결제 관리</MenuItem>
+          <MenuItem className={classes.item}>광고 관리</MenuItem>
         </MenuList>
       </Paper>
-      <div>
-        <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
-          {({ TransitionProps, placement }) => (
-            <Grow
-              {...TransitionProps}
-              style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-            >
-              <Paper>
-                <ClickAwayListener onClickAway={handleClose}>
-                  <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
-                    <MenuItem onClick={handleClose}>Logout</MenuItem>
-                  </MenuList>
-                </ClickAwayListener>
-              </Paper>
-            </Grow>
-          )}
-        </Popper>
-      </div>
     </div>
   );
 }

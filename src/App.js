@@ -1,5 +1,9 @@
 import './App.css';
 import virspitIcon from './assets/ViRSPiT.png'
+import { Route } from 'react-router-dom';
+
+import LoginPage from './router/LoginPages/LoginPage';
+import Home from './router/HomePages/Home';
 function App() {
   return (
     <div className="App">
@@ -11,9 +15,10 @@ function App() {
         <div className="header_bar"></div>
       </header>
 
-      <section >
-        
-      </section>
+      <div className="app-body">
+        <Route exact path="/" component={LoginPage}/>
+        <Route path="/home" component={Home}/>
+      </div>
     </div>
   );
 }

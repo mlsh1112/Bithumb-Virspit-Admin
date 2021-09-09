@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     marginRight: theme.spacing(3),
-    width:"15%",
+    width:"100%",
   },
   item :{
     height:"10vh",

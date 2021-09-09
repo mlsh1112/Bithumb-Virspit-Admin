@@ -1,3 +1,11 @@
 .Home{
-    flex-direction: row;
+    display: flex;
 }
+
+.menu{
+    flex:1;
+}
+
+.contents{
+    flex:4;
+} 

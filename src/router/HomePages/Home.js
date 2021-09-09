@@ -1,5 +1,5 @@
 import React from 'react'
-import Menu from '../../components/Menu'
+import Menu from '../../components/Menu/Menu'
 import { Route } from 'react-router-dom';
 import SportsPage from '../SportsPages/SportsPage';
 import UserPage from '../UserPages/UserPage'
@@ -11,7 +11,7 @@ export default function Home({match}) {
     return (
         <div className="Home"> 
             <section className="menu">
-                <Menu></Menu>
+                <Menu match={match}></Menu>
             </section>
             <section className="contents">
                 <Route exact path={match.path} component={SportsPage}/>

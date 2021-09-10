@@ -1,21 +1,25 @@
 import React from 'react'
 import Button from '@material-ui/core/Button';
-import Modal from '@material-ui/core/Modal';
 import SportModal from './SportModal';
 export default function SportsItem({sport}) {
     const {name,image} = sport
     const [open, setOpen] = React.useState(false)
-
+    const [keyword,setKeyword] = React.useState("")
     const handleDelete = () =>{
 
     }
 
     const handleEdit = () =>{
-        setOpen(true)
+        console.log(keyword)
+        setOpen(false)
     }
     const handleClose = () => {
         setOpen(false);
-      }
+    }
+
+    const handleChange = (event) => {
+        setKeyword(event.target.value);
+    };
 
     return (
         <li style={{fontWeight:"bold"}}>
@@ -26,6 +30,8 @@ export default function SportsItem({sport}) {
                 <SportModal 
                     openModal={open} 
                     handleClose={handleClose}
+                    handleEdit={handleEdit}
+                    handleChange={handleChange}
                     modalKind={"update"}
                     sport={sport} >
                 </SportModal>

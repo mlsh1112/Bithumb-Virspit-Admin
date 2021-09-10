@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SportsPage() {
     const classes = useStyles()
     const [open, setOpen] = React.useState(false)
+    const [keyword,setKeyword] = React.useState("")
 
     const handleOpen = () => {
       setOpen(true);
@@ -42,6 +43,13 @@ export default function SportsPage() {
     const handleClose = () => {
       setOpen(false);
     }
+    const handleUpload = () => {
+      console.log(keyword)
+      setOpen(false);
+    }
+    const handleChange = (event) => {
+      setKeyword(event.target.value);
+  };
     
     return (
         <div>
@@ -60,7 +68,9 @@ export default function SportsPage() {
 
               <SportModal 
                 openModal={open} 
-                handleClose={handleClose} 
+                handleClose={handleClose}
+                handleUpload={handleUpload}
+                handleChange={handleChange}
                 modalKind={"upload"}
                 sport={""}>
               </SportModal>

@@ -48,7 +48,10 @@ export default function SportModal(props) {
     <div style={modalStyle} className={classes.paper}>
         <div className={classes.modalContent}>
             <form noValidate autoComplete="off" >
-                <TextField label="종목 이름" value={name}/>
+                <TextField 
+                  label="종목 이름" 
+                  defaultValue={name}
+                  onChange={props.handleChange}/>
             </form>
         </div>
             
@@ -59,9 +62,9 @@ export default function SportModal(props) {
         <div className={classes.modalBtn}>
           {
             props.modalKind==="upload"?
-            <SubmitBtn value={"Upload"} onClick={props.handleClose}></SubmitBtn>
+            <SubmitBtn value={"Upload"} onClick={props.handleUpload}></SubmitBtn>
             :
-            <SubmitBtn value={"Update"} onClick={props.handleClose}></SubmitBtn>
+            <SubmitBtn value={"Update"} onClick={props.handleEdit}></SubmitBtn>
           }
         
         </div>

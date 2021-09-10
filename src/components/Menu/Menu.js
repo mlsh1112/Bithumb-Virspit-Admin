@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
@@ -20,45 +20,46 @@ const useStyles = makeStyles((theme) => ({
     height:"10vh",
     color:"black",
     fontWeight:"bold",
-  }
+  },
+  clickitem :{
+    height:"10vh",
+    color:mainColor,
+    fontWeight:"bold",
+  },
 }));
 
-export default function Menu({match}) {
+export default function Menu({match,history}) {
   const classes = useStyles();
-  const [exTarget, setexTarget] = useState("")
+  const [click,setClick] = useState("")
 
-  const handleClick = (e) =>{
-    if(exTarget)
-      exTarget.style.color = 'black'
+  useEffect(()=>{
+    let pathname = history.location.pathname.split('/')[2]
+    setClick(pathname)
+  })
 
-    e.target.style.color=mainColor
-
-    setexTarget(e.target)
-  }
-  
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <MenuList >
           
-          <Link to={`${match.url}`} id="link" onClick={handleClick}>
-            <MenuItem className={classes.item}>종목 관리</MenuItem>
+          <Link to={`${match.url}`} id="link">
+            <MenuItem className={click?classes.item:classes.clickitem}>종목 관리</MenuItem>
           </Link>
 
-          <Link to={`${match.url}/user`} id="link" onClick={handleClick}>
-            <MenuItem className={classes.item}>팀/선수 관리</MenuItem>
+          <Link to={`${match.url}/user`} id="link">
+            <MenuItem className={click==='user'?classes.clickitem:classes.item}>팀/선수 관리</MenuItem>
           </Link>
 
-          <Link to={`${match.url}/nft`} id="link" onClick={handleClick}>
-            <MenuItem className={classes.item}>NFT 관리</MenuItem>
+          <Link to={`${match.url}/nft`} id="link">
+            <MenuItem className={click==='nft'?classes.clickitem:classes.item}>NFT 관리</MenuItem>
           </Link>
 
-          <Link to={`${match.url}/payment`} id="link" onClick={handleClick}>
-            <MenuItem className={classes.item}>결제 관리</MenuItem>
+          <Link to={`${match.url}/payment`} id="link">
+            <MenuItem className={click==='payment'?classes.clickitem:classes.item}>결제 관리</MenuItem>
           </Link>
 
-          <Link to={`${match.url}/advertisement`} id="link" onClick={handleClick}>
-            <MenuItem className={classes.item}>광고 관리</MenuItem>
+          <Link to={`${match.url}/advertisement`} id="link">
+            <MenuItem className={click==='advertisement'?classes.clickitem:classes.item}>광고 관리</MenuItem>
           </Link>
           
         </MenuList>
@@ -66,3 +67,4 @@ export default function Menu({match}) {
     </div>
   );
 }
+

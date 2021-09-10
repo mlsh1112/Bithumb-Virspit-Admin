@@ -11,7 +11,7 @@
 ## Commit Convention
 
 ```
-    craete : 컴포넌트 / 페이지 생성 커밋
+    create : 컴포넌트 / 페이지 생성 커밋
     update-ui : UI 스타일 업데이트 커밋
     update-feat : 기능 업데이트 커밋
     fix : 버그 수정 커밋

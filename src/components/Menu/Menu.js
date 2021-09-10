@@ -42,7 +42,7 @@ export default function Menu({match,history}) {
       <Paper className={classes.paper}>
         <MenuList >
           
-          <Link to={`${match.url}`} id="link">
+          <Link to={match.url} id="link">
             <MenuItem className={click?classes.item:classes.clickitem}>종목 관리</MenuItem>
           </Link>
 

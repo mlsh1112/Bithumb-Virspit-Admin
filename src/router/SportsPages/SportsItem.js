@@ -8,7 +8,9 @@ export default function SportsItem({sport}) {
     const handleDelete = () =>{
 
     }
-
+    const handleOpen = () =>{
+        setOpen(true)
+    }
     const handleEdit = () =>{
         console.log(keyword)
         setOpen(false)
@@ -26,7 +28,7 @@ export default function SportsItem({sport}) {
             <div style={{flex:"inline-block",margin:"30px"}}>
                 {name}
                 <Button color="secondary" style={{float: "right"}} onClick={handleDelete}>Delete</Button>
-                <Button color="primary"  style={{float: "right"}} onClick={handleEdit}> Edit </Button>
+                <Button color="primary"  style={{float: "right"}} onClick={handleOpen}> Edit </Button>
                 <SportModal 
                     openModal={open} 
                     handleClose={handleClose}

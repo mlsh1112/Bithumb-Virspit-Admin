@@ -34,7 +34,8 @@ const useStyles = makeStyles((theme) => ({
 export default function SportsPage() {
     const classes = useStyles()
     const [open, setOpen] = React.useState(false)
-    const [keyword,setKeyword] = React.useState("")
+    const [updateKeyword,setUpdateKeyword] = React.useState("")
+    const [searchKeyword,setSearchKeyword] = React.useState("")
 
     const handleOpen = () => {
       setOpen(true);
@@ -44,19 +45,26 @@ export default function SportsPage() {
       setOpen(false);
     }
     const handleUpload = () => {
-      console.log(keyword)
       setOpen(false);
     }
-    const handleChange = (event) => {
-      setKeyword(event.target.value);
-  };
+    const handleUpdateChange = (event) => {
+      setUpdateKeyword(event.target.value);
+    };
+
+    const handleSearchChange = (event) => {
+      setSearchKeyword(event.target.value);
+    };
+    
     
     return (
         <div>
             <Paper className={classes.search}>
                 <section>
                     <form noValidate autoComplete="off" className={classes.searchForm}>
-                        <TextField className={classes.searchBar} label="종목을 검색하세요!" />
+                        <TextField 
+                          className={classes.searchBar}
+                          onChange={handleSearchChange}
+                          label="종목을 검색하세요!" />
                     </form>
                 </section>
             </Paper>
@@ -70,7 +78,7 @@ export default function SportsPage() {
                 openModal={open} 
                 handleClose={handleClose}
                 handleUpload={handleUpload}
-                handleChange={handleChange}
+                handleChange={handleUpdateChange}
                 modalKind={"upload"}
                 sport={""}>
               </SportModal>

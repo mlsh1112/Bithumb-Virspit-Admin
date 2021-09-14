@@ -1,3 +1,4 @@
+import React,{useState} from 'react'
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -44,11 +45,20 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LoginPage({history}) {
   const classes = useStyles();
+  const [email,setEmail] = useState("")
+  const [password,setPassword] = useState("")
   
-  const handleClick = () =>{
-    history.push("/home")
+  const handleClick = (e) =>{
+    e.preventDefault()
+    console.log(email,password)
+    //history.push("/home")
   }
-
+  const handleEmail = (e) =>{
+    setEmail(e.target.value)
+  }
+  const handlePassword = (e) =>{
+    setPassword(e.target.value)
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -70,6 +80,7 @@ export default function LoginPage({history}) {
             name="email"
             autoComplete="email"
             autoFocus
+            onChange={handleEmail}
           />
           <TextField
             variant="outlined"
@@ -82,6 +93,7 @@ export default function LoginPage({history}) {
             id="password"
             autoComplete="current-password"
           />
+
           <Button
             type="submit"
             fullWidth
@@ -94,6 +106,8 @@ export default function LoginPage({history}) {
           </Button>
         </form>
       </div>
+
+
       <Box mt={8}>
         <Copyright />
       </Box>

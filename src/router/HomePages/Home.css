@@ -1,0 +1,11 @@
+.Home{
+    display: flex;
+}
+
+.menu{
+    flex:1;
+}
+
+.contents{
+    flex:4;
+} 

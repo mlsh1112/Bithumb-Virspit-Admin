@@ -1,23 +1,24 @@
-import logo from './logo.svg';
 import './App.css';
+import virspitIcon from './assets/ViRSPiT.png'
+import { Route } from 'react-router-dom';
 
+import LoginPage from './router/LoginPages/LoginPage';
+import Home from './router/HomePages/Home';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header className="app_header">
+        <div className="header-logo-txt">
+          <img className="header_iconImg" src={virspitIcon} width="200" alt='virspit icon'/>
+          <div>ADMIN PAGE</div>
+        </div>
+        <div className="header_bar"></div>
       </header>
+
+      <div className="app-body">
+        <Route exact path="/" component={LoginPage}/>
+        <Route path="/home" component={Home}/>
+      </div>
     </div>
   );
 }

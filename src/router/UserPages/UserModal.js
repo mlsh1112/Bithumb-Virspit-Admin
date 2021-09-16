@@ -39,7 +39,8 @@ function getModalStyle() {
         margin:"30px",
      },
      modalBtn:{
-      margin:"20px"
+      margin:"20px",
+      marginLeft:"130px"
      },
      selectType:{
          display:"flex"
@@ -55,10 +56,8 @@ function getModalStyle() {
 export default function UserModal(props) {
     const classes = useStyles();
     const [modalStyle] = React.useState(getModalStyle);
-    const revenue = props.revenue
+    const revenue = props.user.revenue
     const user = props.user
-
-  
 
     const modalbody = (
       <div style={modalStyle} className={classes.paper}>
@@ -92,6 +91,7 @@ export default function UserModal(props) {
             <form noValidate autoComplete="off" >
                 <TextField 
                   label="종목"
+                  defaultValue={user.sport}
                   onChange={props.handleSportChange}
                   InputProps={{
                     style: { width: "400px" },
@@ -105,6 +105,7 @@ export default function UserModal(props) {
             <form noValidate autoComplete="off" >
                 <TextField 
                   label="설명"
+                  defaultValue={user.describe}
                   onChange={props.handleDescriptionChange}
                   InputProps={{
                     style: { width: "400px" },
@@ -116,7 +117,7 @@ export default function UserModal(props) {
                 <div style={{fontWeight:"bold" }}>Revenue Share</div>
                 <Grid item xs>
                 <Slider
-                    value={typeof revenue === 'number' ? revenue : 0}
+                    value={parseInt(revenue)}
                     onChange={props.handleSliderChange}
                     aria-labelledby="input-slider"
                 />

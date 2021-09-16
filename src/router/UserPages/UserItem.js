@@ -4,18 +4,15 @@ import { mainColor } from '../../assets/colors'
 import UserModal from './UserModal'
 
 export default function UserItem(props) {
-    const user = props.user
+    const [user,setUser] = React.useState(props.user)
     const [open,setOpen] = React.useState(false)
-    const [name,setName] = React.useState(user.name)
-    const [type, setType] = React.useState(user.type)
-    const [sport,setSport] = React.useState("")
-    const [describe,setDescript] = React.useState("")
-    const [revenue,setRevenue] = React.useState(0)
-    const [error, setError] = React.useState(false)
     
-    const handleRadioChange = (event) => {
-        setType(event.target.value)
-        setError(false)
+    const handleRadioChange = (e) => {
+        e.preventDefault()
+        setUser({
+            ...user,
+            type:e.target.value
+        })
     };
     const handleDelete = () =>{
 
@@ -30,29 +27,49 @@ export default function UserItem(props) {
 
     const handleEdit=(e)=>{
         e.preventDefault()
-        console.log(name,type,sport,describe)
+        console.log(user)
         setOpen(false)
     }
     const handleNameChange=(e)=>{
-        console.log(e.target.value)
-        setName(e.target.value)
+        e.preventDefault()
+        setUser({
+            ...user,
+            name:e.target.value
+        })
     }
     const handleSportChange=(e)=>{
-        setSport(e.target.value)
+        e.preventDefault()
+        setUser({
+            ...user,
+            sport:e.target.value
+        })
     }
     const handleDescriptionChange=(e)=>{
-        setDescript(e.target.value)
+        e.preventDefault()
+        setUser({
+            ...user,
+            describe:e.target.value
+        })
     }
 
-    const handleSliderChange = (event, newValue) => {
-        setRevenue(newValue);
+    const handleSliderChange = (e, newValue) => {
+        setUser({
+            ...user,
+            revenue:newValue
+        })
     };
 
     const handleRevenueChange = (event) => {
         if(event.target.name==='virspit')
-            setRevenue(event.target.value === '' ? '' : Number(event.target.value));
-        else
-            setRevenue(event.target.value === '' ? '' : Number(100-event.target.value));
+            setUser({
+                ...user,
+                revenue:event.target.value === '' ? '' : Number(event.target.value)
+            })
+         else
+            setUser({
+                ...user,
+                revenue:event.target.value === '' ? '' : Number(100 - event.target.value)
+            })
         
 
     };
@@ -95,7 +112,6 @@ export default function UserItem(props) {
                         handleRevenueChange={handleRevenueChange}
                         modalKind={"update"}
                         user={user}
-                        revenue={revenue}
                         >
 
                     </UserModal>

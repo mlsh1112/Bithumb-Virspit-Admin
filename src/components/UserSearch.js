@@ -31,7 +31,12 @@ export default function UserSearch(props) {
     }
 
     const handleUser = (e) =>{
-        setUser(e.target.value)
+      setUser(e.target.value)
+    }
+
+    const handleSubmit =(e)=>{
+      e.preventDefault()
+      console.log(user,sport)
     }
 
     return (
@@ -53,7 +58,7 @@ export default function UserSearch(props) {
                 </Select>
             </FormControl>
 
-            <form noValidate autoComplete="off"  >
+            <form noValidate autoComplete="off" onSubmit={handleSubmit} >
                 <TextField 
                   label="팀 / 선수 이름"
                   onChange={handleUser}

@@ -4,6 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import UserSearch from '../../components/UserSearch';
 import TextField from '@material-ui/core/TextField';
 import {mainColor} from '../../assets/colors'
+import IconButton from '@material-ui/core/IconButton';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import NFTList from './NFTList';
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
           marginTop:"30px"
       }
   }));
-export default function NFTPage() {
+export default function NFTPage({history}) {
     const classes = useStyles()
     const [searchuser, setSearchUser] = React.useState("");
     const [selectsport, setSelectSport] = React.useState('');
@@ -48,9 +50,13 @@ export default function NFTPage() {
     const handleNFTsearch = (e) =>{
         setSearchNFT(e.target.value)
     }
+    const handleCreatePage = () =>{
+        history.push('/home/nftcreate')
+    }
     return (
         <div>
             <Paper className={classes.search}>
+
                 <UserSearch 
                     handleSelectSportChange={handleSelectSportChange} 
                     handleSearchUser={handleSearchUser}
@@ -65,6 +71,9 @@ export default function NFTPage() {
             </Paper>
 
             <Paper className={classes.list}>
+                <IconButton onClick={handleCreatePage}>
+                    <AddCircleIcon className={classes.icon}></AddCircleIcon>
+                </IconButton>
                 <NFTList></NFTList>
             </Paper>
         </div>

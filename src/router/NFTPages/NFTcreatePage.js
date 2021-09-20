@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import SubmitBtn from '../../components/SubmitBtn';
 
 const useStyles = makeStyles((theme) => ({
     createPage:{
@@ -28,9 +29,13 @@ const useStyles = makeStyles((theme) => ({
     },
     imginput:{
         display:'none'
+    },
+    submitBtn:{
+        display:'flex',
+        justifyContent:"center"
     }
   }));
-export default function NFTCreatePage() {
+export default function NFTCreatePage({history}) {
     const classes = useStyles()
 
     const fReader = new FileReader();
@@ -109,6 +114,13 @@ export default function NFTCreatePage() {
             count:e.target.value
         })
     }
+
+    const handleSubmit =()=>{
+        console.log(nft)
+        alert("upload")
+        history.goBack()
+    }
+
     return (
         <div>
             NFT 등록
@@ -116,13 +128,17 @@ export default function NFTCreatePage() {
                 <div className={classes.imgupload}>
                     <div>
                         {
-                            nft.nftimg?
+                            (nft.nftimg)?
                             (<div >
                                 <img src={nft.nftimg} className={classes.img} alt="nftimg"/>
+                                {/* <input accept="image/*" className={classes.imginput} id="icon-button-file" type="file" name="nft" onChange={handleNFTimg} />
+                                <label htmlFor="icon-button-file">
+                                    <img src={nft.nftimg} className={classes.img} alt="nftimg"/>
+                                </label> */}
                             </div>)
                             :
                             (<div className={classes.img}>
-                                <input accept="image/*" className={classes.imginput} id="icon-button-file" type="file" onChange={handleNFTimg} />
+                                <input accept="image/*" className={classes.imginput} id="icon-button-file" type="file" name="nft" onChange={handleNFTimg} />
                                 <label htmlFor="icon-button-file">
                                     <IconButton color="primary" aria-label="upload picture" component="span">
                                     <PhotoCamera />
@@ -137,11 +153,15 @@ export default function NFTCreatePage() {
                         {
                             nft.detailImg?
                             (<div >
-                                <img src={nft.detailImg} className={classes.img} alt="nftimg"/>
+                                <img src={nft.detailImg} className={classes.img} alt="detailimg"/>
+                                {/* <input accept="image/*" className={classes.imginput} id="icon-button-file" type="file" name="detail" onChange={handledetailimg} />
+                                <label htmlFor="icon-button-file">
+                                    <img src={nft.detailImg} className={classes.img} alt="detailimg"/>
+                                </label> */}
                             </div>)
                             :
                             (<div className={classes.img}>
-                                <input accept="image/*" className={classes.imginput} id="icon-button-file" type="file" onChange={handledetailimg}/>
+                                <input accept="image/*" className={classes.imginput} id="icon-button-file" type="file" name="detail" onChange={handledetailimg}/>
                                 <label htmlFor="icon-button-file">
                                     <IconButton color="primary" aria-label="upload picture" component="span">
                                     <PhotoCamera />
@@ -184,9 +204,10 @@ export default function NFTCreatePage() {
                     label="Count"
                     onChange={handleNFTcount}
                     className={classes.input}/>
-
-
                 </form>
+                <div className={classes.submitBtn}>
+                <SubmitBtn value={"Upload"} onClick={handleSubmit}></SubmitBtn>
+                </div>
             </Paper>
         </div>
     )

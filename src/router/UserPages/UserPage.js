@@ -36,6 +36,7 @@ export default function UserPage() {
     const [newuser,setNewuser] = React.useState(initalUser)
     const [open, setOpen] = React.useState(false)
     const [selectsport, setSelectSport] = React.useState('');
+    const [searchuser, setSearchUser] = React.useState("");
     
 
     const handleOpen = () => {
@@ -45,9 +46,16 @@ export default function UserPage() {
         setOpen(false)
     }
 
-    const handleChange = (event) => {
+    const handleSelectSportChange = (event) => {
         setSelectSport(event.target.value);
     };
+    const handleSearchUser = (e) =>{
+        setSearchUser(e.target.value)
+    }
+    const handleUserSearchSubmit =(e)=>{
+        console.log(searchuser,selectsport)
+        e.preventDefault()
+    }
 
     const handleUpload = (e) =>{
         e.preventDefault()
@@ -105,7 +113,12 @@ export default function UserPage() {
     return (
         <div>
             <Paper className={classes.search}>
-                <UserSearch handleChange={handleChange} sport={selectsport}></UserSearch>
+                <UserSearch 
+                    handleSelectSportChange={handleSelectSportChange} 
+                    handleSearchUser={handleSearchUser}
+                    handleUserSearchSubmit={handleUserSearchSubmit}
+                    sport={selectsport}>
+                    </UserSearch>
             </Paper>
             <Paper className={classes.list}>
                 <IconButton onClick={handleOpen}>

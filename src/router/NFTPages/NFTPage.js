@@ -1,9 +1,73 @@
 import React from 'react'
+import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
+import UserSearch from '../../components/UserSearch';
+import TextField from '@material-ui/core/TextField';
+import {mainColor} from '../../assets/colors'
 
+const useStyles = makeStyles((theme) => ({
+    search: {
+        marginRight: theme.spacing(3),
+        marginBottom:"20px",
+        padding:"30px"
+      },
+      list: {
+        marginRight: theme.spacing(3),
+        padding:"30px"
+      },
+      icon:{
+        color:mainColor,
+        fontSize:"35px"
+      },
+      nftsearch:{
+          width:"140vh",
+          marginTop:"30px"
+      }
+  }));
 export default function NFTPage() {
+    const classes = useStyles()
+    const [searchuser, setSearchUser] = React.useState("");
+    const [selectsport, setSelectSport] = React.useState('');
+    const [searchNFT, setSearchNFT] = React.useState('')
+
+    const handleSelectSportChange = (event) => {
+        setSelectSport(event.target.value);
+    };
+    const handleSearchUser = (e) =>{
+        setSearchUser(e.target.value)
+    }
+    const handleUserSearchSubmit =(e)=>{
+        console.log(searchuser,selectsport)
+        e.preventDefault()
+    }
+    const handleNFTsubmit = (e) =>{
+        e.preventDefault()
+        console.log(searchuser,selectsport,searchNFT)
+    }
+    const handleNFTsearch = (e) =>{
+        setSearchNFT(e.target.value)
+    }
     return (
         <div>
-            NFTPage
+            <Paper className={classes.search}>
+                <UserSearch 
+                    handleSelectSportChange={handleSelectSportChange} 
+                    handleSearchUser={handleSearchUser}
+                    handleUserSearchSubmit={handleUserSearchSubmit}
+                    sport={selectsport}></UserSearch>
+                <form noValidate autoComplete="off" onSubmit={handleNFTsubmit} >
+                    <TextField 
+                    label="NFT 명"
+                    onChange={handleNFTsearch}
+                    className={classes.nftsearch}/>
+                </form>
+            </Paper>
+
+            <Paper className={classes.list}>
+                <ul>
+
+                </ul>
+            </Paper>
         </div>
     )
 }

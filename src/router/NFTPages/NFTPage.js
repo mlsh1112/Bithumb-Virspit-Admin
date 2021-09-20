@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import UserSearch from '../../components/UserSearch';
 import TextField from '@material-ui/core/TextField';
 import {mainColor} from '../../assets/colors'
+import NFTList from './NFTList';
 
 const useStyles = makeStyles((theme) => ({
     search: {
@@ -64,9 +65,7 @@ export default function NFTPage() {
             </Paper>
 
             <Paper className={classes.list}>
-                <ul>
-
-                </ul>
+                <NFTList></NFTList>
             </Paper>
         </div>
     )

@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
         fontSize:"35px"
       },
       nftsearch:{
-          width:"140vh",
+          width:"120vh",
           marginTop:"30px"
       }
   }));

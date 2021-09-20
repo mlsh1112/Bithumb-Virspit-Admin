@@ -25,8 +25,8 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor:"#eee",
         borderRadius:"10px",
         width:"200px",
-        height:"250px"
-    },
+        height:"250px",
+        },
     imginput:{
         display:'none'
     },
@@ -37,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
   }));
 export default function NFTCreatePage({history}) {
     const classes = useStyles()
-
     const fReader = new FileReader();
     const initialNFT = {
         nftimg:"",
@@ -114,7 +113,12 @@ export default function NFTCreatePage({history}) {
             count:e.target.value
         })
     }
-
+    const handleStartdate=(e)=>{
+        setNFT({
+            ...nft,
+            startDate:e.target.value
+        })
+    }
     const handleSubmit =()=>{
         console.log(nft)
         alert("upload")
@@ -127,46 +131,43 @@ export default function NFTCreatePage({history}) {
             <Paper className={classes.createPage}>
                 <div className={classes.imgupload}>
                     <div>
+                    <div style={{marginLeft:'120px', fontSize:'bold'}}>Upload NFT picture</div>
                         {
                             (nft.nftimg)?
                             (<div >
-                                <img src={nft.nftimg} className={classes.img} alt="nftimg"/>
-                                {/* <input accept="image/*" className={classes.imginput} id="icon-button-file" type="file" name="nft" onChange={handleNFTimg} />
-                                <label htmlFor="icon-button-file">
-                                    <img src={nft.nftimg} className={classes.img} alt="nftimg"/>
-                                </label> */}
+                                <img src={nft.nftimg} className={classes.img} alt="nftimg"/>  <br/>
+                                <input accept="image/*" id="icon-button-file" style={{marginLeft:'100px'}} type="file" name="nft" onChange={handleNFTimg} />
                             </div>)
                             :
                             (<div className={classes.img}>
-                                <input accept="image/*" className={classes.imginput} id="icon-button-file" type="file" name="nft" onChange={handleNFTimg} />
-                                <label htmlFor="icon-button-file">
+                                <input accept="image/*" id="icon-button-file" type="file" name="nft" onChange={handleNFTimg} />
+                                {/* <label htmlFor="icon-button-file">
                                     <IconButton color="primary" aria-label="upload picture" component="span">
                                     <PhotoCamera />
-                                    </IconButton>
-                                </label>
+                                    </IconButton><br/>
+                                </label> */}
                             </div>)
                         }
                         
                     </div>
                     
                     <div>
+                    <div style={{marginLeft:'120px', fontSize:'bold'}}>Upload Detail picture</div>
                         {
-                            nft.detailImg?
+                            (nft.detailImg)?
                             (<div >
-                                <img src={nft.detailImg} className={classes.img} alt="detailimg"/>
-                                {/* <input accept="image/*" className={classes.imginput} id="icon-button-file" type="file" name="detail" onChange={handledetailimg} />
-                                <label htmlFor="icon-button-file">
-                                    <img src={nft.detailImg} className={classes.img} alt="detailimg"/>
-                                </label> */}
+                                <img src={nft.detailImg} className={classes.img} alt="detailimg"/><br/>
+                                <input accept="image/*" id="icon-button-file" style={{marginLeft:'100px'}} type="file" name="detail" onChange={handledetailimg}/>
+                                
                             </div>)
                             :
                             (<div className={classes.img}>
-                                <input accept="image/*" className={classes.imginput} id="icon-button-file" type="file" name="detail" onChange={handledetailimg}/>
-                                <label htmlFor="icon-button-file">
+                                <input accept="image/*" id="icon-button-file"  type="file" name="detail" onChange={handledetailimg}/>
+                                {/* <label htmlFor="icon-button-file">
                                     <IconButton color="primary" aria-label="upload picture" component="span">
                                     <PhotoCamera />
                                     </IconButton>
-                                </label>
+                                </label> */}
                             </div>)
                         }
                     </div>
@@ -204,6 +205,17 @@ export default function NFTCreatePage({history}) {
                     label="Count"
                     onChange={handleNFTcount}
                     className={classes.input}/>
+
+                    <TextField
+                    id="datetime-local"
+                    label="Start Date"
+                    type="datetime-local"
+                    className={classes.input}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    onChange={handleStartdate}
+                        />
                 </form>
                 <div className={classes.submitBtn}>
                 <SubmitBtn value={"Upload"} onClick={handleSubmit}></SubmitBtn>

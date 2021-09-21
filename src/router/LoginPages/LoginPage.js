@@ -51,7 +51,7 @@ export default function LoginPage({history}) {
   const handleClick = (e) =>{
     e.preventDefault()
     console.log(email,password)
-    //history.push("/home")
+    history.push("/home")
   }
   const handleEmail = (e) =>{
     setEmail(e.target.value)

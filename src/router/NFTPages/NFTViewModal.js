@@ -2,6 +2,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import SubmitBtn from '../../components/SubmitBtn';
+import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 
 function getModalStyle() {
@@ -150,6 +151,16 @@ export default function NFTViewModal(props) {
                     }}
                     onChange={props.handleStartdate}
                         />
+
+                    <div>
+                        &nbsp;Exhibition &nbsp;&nbsp;&nbsp;&nbsp;
+                        <Checkbox
+                            checked={nft.exhibition}
+                            onChange={props.handleExhibition}
+                            color="primary"
+                            inputProps={{ 'aria-label': 'secondary checkbox'  }}
+                        />
+                    </div>
                 </form>
             </div>
             <div className={classes.submitBtn}>

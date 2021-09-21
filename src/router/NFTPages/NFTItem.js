@@ -111,7 +111,12 @@ export default function NFTItem(props) {
             startDate:e.target.value
         })
     }
-    
+    const handleExhibition=(e)=>{
+        setNFT({
+            ...nft,
+            exhibition:e.target.checked
+        })
+    }
     return (
         <div>
         <Paper className={classes.item} onClick={handleClick}>
@@ -135,6 +140,7 @@ export default function NFTItem(props) {
                 handleNFTprice={handleNFTprice}
                 handleNFTcount={handleNFTcount}
                 handleStartdate={handleStartdate}
+                handleExhibition={handleExhibition}
                 edit={nftedit}
                 nft={nft}
         ></NFTViewModal>

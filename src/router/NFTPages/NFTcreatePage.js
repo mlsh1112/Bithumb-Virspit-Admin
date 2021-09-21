@@ -3,7 +3,8 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import Checkbox from '@material-ui/core/Checkbox';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import SubmitBtn from '../../components/SubmitBtn';
 
 const useStyles = makeStyles((theme) => ({
@@ -119,15 +120,32 @@ export default function NFTCreatePage({history}) {
             startDate:e.target.value
         })
     }
+    const handleExhibition=(e)=>{
+        setNFT({
+            ...nft,
+            exhibition:e.target.checked
+        })
+    }
     const handleSubmit =()=>{
         console.log(nft)
         alert("upload")
         history.goBack()
     }
 
+    const handleBackBtn=()=>{
+        history.goBack()
+    }
+
     return (
         <div>
-            NFT 등록
+            <div style={{fontWeight:'bold'}}>
+                <IconButton onClick={handleBackBtn}>
+                    <ArrowBackIcon className={classes.icon}></ArrowBackIcon>
+                </IconButton>
+                NFT 등록
+                
+            </div>
+            
             <Paper className={classes.createPage}>
                 <div className={classes.imgupload}>
                     <div>
@@ -216,6 +234,16 @@ export default function NFTCreatePage({history}) {
                     }}
                     onChange={handleStartdate}
                         />
+                    
+                    <div>
+                        &nbsp;Exhibition &nbsp;&nbsp;&nbsp;&nbsp;
+                        <Checkbox
+                            checked={nft.exhibition}
+                            onChange={handleExhibition}
+                            color="primary"
+                            inputProps={{ 'aria-label': 'secondary checkbox'  }}
+                        />
+                    </div>
                 </form>
                 <div className={classes.submitBtn}>
                 <SubmitBtn value={"Upload"} onClick={handleSubmit}></SubmitBtn>

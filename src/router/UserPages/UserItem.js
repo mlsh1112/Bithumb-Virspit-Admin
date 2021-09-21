@@ -1,12 +1,78 @@
 import React from 'react'
 import Button from '@material-ui/core/Button'
 import { mainColor } from '../../assets/colors'
+import UserModal from './UserModal'
 
 export default function UserItem(props) {
-    const user = props.user
+    const [user,setUser] = React.useState(props.user)
+    const [open,setOpen] = React.useState(false)
+    
+    const handleRadioChange = (e) => {
+        e.preventDefault()
+        setUser({
+            ...user,
+            type:e.target.value
+        })
+    };
     const handleDelete = () =>{
 
     }
+    const handleOpen = () =>{
+        setOpen(true)
+    }
+
+    const handleClose = () => {
+        setOpen(false)
+    }
+
+    const handleEdit=(e)=>{
+        e.preventDefault()
+        console.log(user)
+        setOpen(false)
+    }
+    const handleNameChange=(e)=>{
+        e.preventDefault()
+        setUser({
+            ...user,
+            name:e.target.value
+        })
+    }
+    const handleSportChange=(e)=>{
+        e.preventDefault()
+        setUser({
+            ...user,
+            sport:e.target.value
+        })
+    }
+    const handleDescriptionChange=(e)=>{
+        e.preventDefault()
+        setUser({
+            ...user,
+            describe:e.target.value
+        })
+    }
+
+    const handleSliderChange = (e, newValue) => {
+        setUser({
+            ...user,
+            revenue:newValue
+        })
+    };
+
+    const handleRevenueChange = (event) => {
+        if(event.target.name==='virspit')
+            setUser({
+                ...user,
+                revenue:event.target.value === '' ? '' : Number(event.target.value)
+            })
+         else
+            setUser({
+                ...user,
+                revenue:event.target.value === '' ? '' : Number(100 - event.target.value)
+            })
+        
+
+    };
     const labelstyle = {
         fontWeight:"bold",
         backgroundColor:mainColor,
@@ -32,8 +98,23 @@ export default function UserItem(props) {
                     {userTypeLable}
                 </div>
                 <div style={{float: "right"}}>
-                    <Button color="primary" > Edit </Button>
+                    <Button color="primary" onClick={handleOpen} > Edit </Button>
                     <Button color="secondary" onClick={handleDelete}>Delete</Button>
+                    <UserModal
+                        openModal={open}
+                        handleClose={handleClose}
+                        handleEdit={handleEdit}
+                        handleNameChange={handleNameChange}
+                        handleRadioChange={handleRadioChange}
+                        handleSportChange={handleSportChange}
+                        handleDescriptionChange={handleDescriptionChange}
+                        handleSliderChange={handleSliderChange}
+                        handleRevenueChange={handleRevenueChange}
+                        modalKind={"update"}
+                        user={user}
+                        >
+
+                    </UserModal>
                 </div>
             </div>
         </li>

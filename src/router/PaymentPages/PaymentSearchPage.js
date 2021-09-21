@@ -3,10 +3,10 @@ import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import UserSearch from '../../components/UserSearch';
 import TextField from '@material-ui/core/TextField';
-import {mainColor} from '../../assets/colors'
-import IconButton from '@material-ui/core/IconButton';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import NFTList from './NFTList';
+import DateRangePicker from '@mui/lab/DateRangePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import Box from '@mui/material/Box';
 
 const useStyles = makeStyles((theme) => ({
     search: {
@@ -18,21 +18,21 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(3),
         padding:"30px"
       },
-      icon:{
-        color:mainColor,
-        fontSize:"35px"
-      },
       nftsearch:{
           width:"120vh",
           marginTop:"30px"
+      },
+      datesearch:{
+
+        marginBottom:"30px"
       }
   }));
-export default function NFTPage({history}) {
+export default function PaymentSearchPage() {
     const classes = useStyles()
     const [searchuser, setSearchUser] = React.useState("");
     const [selectsport, setSelectSport] = React.useState('');
     const [searchNFT, setSearchNFT] = React.useState('')
-
+    const [date, setDate] = React.useState([null, null]);
     const handleSelectSportChange = (event) => {
         setSelectSport(event.target.value);
     };
@@ -50,13 +50,28 @@ export default function NFTPage({history}) {
     const handleNFTsearch = (e) =>{
         setSearchNFT(e.target.value)
     }
-    const handleCreatePage = () =>{
-        history.push('/home/nftcreate')
-    }
     return (
         <div>
             <Paper className={classes.search}>
-
+                <div className={classes.datesearch}>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DateRangePicker
+                            startText="결제 날짜 (start)"
+                            endText="결제 날짜 (end)"
+                            value={date}
+                            onChange={(newValue) => {
+                            setDate(newValue);
+                            }}
+                            renderInput={(startProps, endProps) => (
+                            <React.Fragment>
+                                <TextField {...startProps} />
+                                <Box sx={{ mx: 2 }}> to </Box>
+                                <TextField {...endProps} />
+                            </React.Fragment>
+                            )}
+                        />
+                        </LocalizationProvider>
+                    </div>
                 <UserSearch 
                     handleSelectSportChange={handleSelectSportChange} 
                     handleSearchUser={handleSearchUser}
@@ -68,14 +83,7 @@ export default function NFTPage({history}) {
                     onChange={handleNFTsearch}
                     className={classes.nftsearch}/>
                 </form>
-            </Paper>
-
-            <Paper className={classes.list}>
-                <IconButton onClick={handleCreatePage}>
-                    <AddCircleIcon className={classes.icon}></AddCircleIcon>
-                </IconButton>
-                <NFTList></NFTList>
-            </Paper>
+                </Paper>
         </div>
     )
 }

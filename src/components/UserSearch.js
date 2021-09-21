@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
 export default function UserSearch(props) {
     const classes = useStyles()
     const [open, setOpen] = React.useState(false);
-    const [user, setUser] = React.useState("");
     
     const sport = props.sport || ""
 
@@ -28,10 +27,6 @@ export default function UserSearch(props) {
   
     const handleOpen = () => {
       setOpen(true);
-    }
-
-    const handleUser = (e) =>{
-        setUser(e.target.value)
     }
 
     return (
@@ -45,7 +40,7 @@ export default function UserSearch(props) {
                     onClose={handleClose}
                     onOpen={handleOpen}
                     value={sport}
-                    onChange={props.handleChange}
+                    onChange={props.handleSelectSportChange}
                 >
                 <MenuItem value={"Soccer"}>Soccer</MenuItem>
                 <MenuItem value={"Baseball"}>Baseball</MenuItem>
@@ -53,10 +48,10 @@ export default function UserSearch(props) {
                 </Select>
             </FormControl>
 
-            <form noValidate autoComplete="off"  >
+            <form noValidate autoComplete="off" onSubmit={props.handleUserSearchSubmit} >
                 <TextField 
                   label="팀 / 선수 이름"
-                  onChange={handleUser}
+                  onChange={props.handleSearchUser}
                   className={classes.search}/>
             </form>
         </div>

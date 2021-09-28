@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom';
 import SportsPage from '../SportsPages/SportsPage';
 import UserPage from '../UserPages/UserPage'
 import NFTPage from '../NFTPages/NFTPage'
-import NFTcreatePage from '../NFTPages/NFTcreatePage'
+import NFTcreatePage from '../NFTPages/NFTcreate/NFTcreatePage'
 import PaymentPage from '../PaymentPages/PaymentPage'
 import AdvertisementPage from '../AdvertisementPages/AdvertisementPage'
 import './Home.css'

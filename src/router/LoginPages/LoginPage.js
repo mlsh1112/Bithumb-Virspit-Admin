@@ -10,6 +10,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {mainColor} from '../../assets/colors'
+
+import {useDispatch} from 'react-redux'
+import {loginUser} from '../../_actions/user_action'
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -47,11 +50,32 @@ export default function LoginPage({history}) {
   const classes = useStyles();
   const [email,setEmail] = useState("")
   const [password,setPassword] = useState("")
+
+  const dispatch = useDispatch()
   
   const handleClick = (e) =>{
     e.preventDefault()
     console.log(email,password)
-    history.push("/home")
+
+    let body = {
+      email : email,
+      password : password
+    }
+
+    //dispatch(loginUser(body))
+    // .then(res=>{
+    //   if(res.payload.loginSuccess){
+    //     history.push("/home")
+    //   }
+    // })
+
+    //history.push("/home")
+    
+
+    const type = dispatch(loginUser(body)).payload.type
+
+    if(type==='admin') history.push('/home')
+    else alert("접근 권한이 없습니다.")
   }
   const handleEmail = (e) =>{
     setEmail(e.target.value)
@@ -75,10 +99,10 @@ export default function LoginPage({history}) {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="id"
+            label="ID"
+            name="id"
+            autoComplete="id"
             autoFocus
             onChange={handleEmail}
           />
@@ -92,6 +116,7 @@ export default function LoginPage({history}) {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={handlePassword}
           />
 
           <Button

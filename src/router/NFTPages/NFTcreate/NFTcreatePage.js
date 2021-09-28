@@ -1,41 +1,17 @@
 import React from 'react'
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import Checkbox from '@material-ui/core/Checkbox';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import SubmitBtn from '../../components/SubmitBtn';
+import SubmitBtn from '../../../components/SubmitBtn';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import useStyles from './createStyle'
 
-const useStyles = makeStyles((theme) => ({
-    createPage:{
-        marginRight: theme.spacing(3),
-        marginTop: theme.spacing(3),
-        padding:"40px"
-    },
-    input:{
-        width:'100vh',
-        marginBottom:'40px'
-    },
-    imgupload:{
-        display:'flex',
-
-    },
-    img:{
-        marginLeft:'100px',
-        backgroundColor:"#eee",
-        borderRadius:"10px",
-        width:"200px",
-        height:"250px",
-        },
-    imginput:{
-        display:'none'
-    },
-    submitBtn:{
-        display:'flex',
-        justifyContent:"center"
-    }
-  }));
+const players = new Map()
 export default function NFTCreatePage({history}) {
     const classes = useStyles()
     const fReader = new FileReader();
@@ -45,6 +21,7 @@ export default function NFTCreatePage({history}) {
         title:"",
         name:"",
         sport:"",
+        player:"",
         describtion:"",
         price:0,
         count:0,
@@ -52,7 +29,19 @@ export default function NFTCreatePage({history}) {
         exhibition:false
     }
     const [nft,setNFT] = React.useState(initialNFT)
+    const [sports,setSports] = React.useState([
+        {id:1, sport:"soccer"},
+        {id:2, sport:"baseball"},
+        {id:3, sport:"basketball"},])
+    const [sport,setSport] = React.useState("")
+    const [player,setPlayer] = React.useState([])
 
+    const exdata = [
+        [],
+        ["park", "son","Tottenham"],
+        ["park"],
+        ["kim"],
+    ]
     const handleNFTimg=(e)=>{
         fReader.readAsDataURL(e.target.files[0]);
         fReader.onloadend = function(event){
@@ -91,9 +80,24 @@ export default function NFTCreatePage({history}) {
         })
     }
     const handleNFTsport=(e)=>{
+        e.preventDefault()
         setNFT({
             ...nft,
             sport:e.target.value
+        })
+
+        if(!players.has(e.target.value)){
+            players.set(e.target.value,exdata[e.target.value])
+        }
+        
+        setPlayer(players.get(e.target.value))
+    
+    }
+
+    const handleNFTplayer =(e)=>{
+        setNFT({
+            ...nft,
+            player:e.target.value
         })
     }
     const handleNFTdescribe=(e)=>{
@@ -203,10 +207,40 @@ export default function NFTCreatePage({history}) {
                     onChange={handleNFTname}
                     className={classes.input}/><br/>
 
-                    <TextField 
-                    label="Sport"
-                    onChange={handleNFTsport}
-                    className={classes.input}/><br/>
+                    <FormControl className={classes.sportSelect}>
+                    <InputLabel id="demo-simple-select-label">Sport</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={nft.sport}
+                            label="sport"
+                            onChange={handleNFTsport}
+                        >
+                            {
+                                sports.map(sport=>{
+                                    return (<MenuItem value={sport.id}>{sport.sport}</MenuItem>)
+                                })
+                            }
+                        </Select>
+                    </FormControl>
+
+                    <FormControl className={classes.playerSelect}>
+                        <InputLabel id="demo-simple-select-label">Player OR Team</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={nft.player}
+                            label="player"
+                            onChange={handleNFTplayer}
+                        >
+                            {
+                                player.map(item=>{
+                                    return (<MenuItem value={item}>{item}</MenuItem>)
+                                })
+                            }
+                        </Select>
+                    </FormControl>
+                    <br/>
 
                     <TextField 
                     label="Describtion"

@@ -1,7 +1,8 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
 import NFTViewModal from './NFTViewModal';
+import {getplayer} from '../../api/API'
 
 const useStyles = makeStyles((theme) => ({
     item:{
@@ -25,10 +26,18 @@ const useStyles = makeStyles((theme) => ({
 export default function NFTItem(props) {
     const classes = useStyles()
     const [nft,setNFT] = React.useState(props.nft)
+    const [name,setName] = React.useState("")
     const [open,setOpen] = React.useState(false)
     const [nftedit,setEdit] = React.useState(false)
 
     const fReader = new FileReader();
+    useEffect(() => {
+        getplayer(nft.teamPlayerId)
+        .then(res=>{
+            console.log(res.data.data)
+            setName(res.data.data.name)
+        })
+    }, [])
 
     const handleClick=()=>{
         setEdit(false)
@@ -90,7 +99,7 @@ export default function NFTItem(props) {
     const handleNFTdescribe=(e)=>{
         setNFT({
             ...nft,
-            describtion:e.target.value
+            description:e.target.value
         })
     }
     const handleNFTprice=(e)=>{
@@ -108,7 +117,7 @@ export default function NFTItem(props) {
     const handleStartdate=(e)=>{
         setNFT({
             ...nft,
-            startDate:e.target.value
+            startDateTime:e.target.value
         })
     }
     const handleExhibition=(e)=>{
@@ -121,8 +130,8 @@ export default function NFTItem(props) {
         <div>
         <Paper className={classes.item} onClick={handleClick}>
             <div className={classes.data}>
-                <img src={nft.nftimg} alt="nftimg" className={classes.img}></img>
-                {nft.title} &nbsp;&nbsp;|&nbsp;&nbsp; {nft.name}
+                <img src={nft.nftImageUrl} alt="nftImageUrl" className={classes.img}></img>
+                {nft.title} &nbsp;&nbsp;|&nbsp;&nbsp; {name}
             </div>
         </Paper>
 
@@ -143,6 +152,7 @@ export default function NFTItem(props) {
                 handleExhibition={handleExhibition}
                 edit={nftedit}
                 nft={nft}
+                name={name}
         ></NFTViewModal>
         </div>
     )

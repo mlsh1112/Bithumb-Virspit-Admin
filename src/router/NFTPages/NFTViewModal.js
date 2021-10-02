@@ -45,33 +45,34 @@ export default function NFTViewModal(props) {
     const classes = useStyles();
     const [modalStyle] = React.useState(getModalStyle);
     const nft = props.nft
+    const name = props.name
 
     const modalbody=(
         <div style={modalStyle} className={classes.paper}>
             <div className={classes.info}>
                 <div>
                     NFT Image<br/>
-                    <img src={nft.nftimg} alt="nftimg" className={classes.img}></img><br/>
+                    <img src={nft.nftImageUrl} alt="nftImageUrl" className={classes.img}></img><br/>
                     Detail Image<br/>
-                    <img src={nft.detailImg} alt="nftimg" className={classes.img}></img>
+                    <img src={nft.detailImageUrl} alt="detailImageUrl" className={classes.img}></img>
                 </div>
                 <ul>
                     <p>
                         <li>Title : {nft.title} </li>
-                        <li>Name : {nft.name}</li>
+                        <li>Name : {name}</li>
                         <li>Sport : {nft.sport}</li>
-                        <li>Describtion : {nft.describtion}</li>
+                        <li>Describtion : {nft.description}</li>
                     </p>
 
                     <p>
                         <li>Price : {nft.price} </li>
                         <li>Count : {nft.count}</li>
-                        <li>StartDate : {nft.startDate}</li>
+                        <li>StartDate : {nft.startDateTime}</li>
                     </p>
 
                     <p>
                         <li>Exhibition : {nft.exhibition?'Y':'N'} </li>
-                        <li>Sold out : {nft.soldout?'Y':'N'}</li>
+                        <li>Sold out : {nft.count<=0?'Y':'N'}</li>
                     </p>
                 </ul>
             </div>
@@ -82,6 +83,7 @@ export default function NFTViewModal(props) {
         </div>
     )
 
+    const editTime = (nft.startDateTime).split(" ").join("T")
     const editmodalbody=(
         <div style={modalStyle} className={classes.paper}>
             <div className={classes.info}>
@@ -90,7 +92,7 @@ export default function NFTViewModal(props) {
                     <form>
                         <input accept="image/*" className={classes.imginput} id="icon-button-file" type="file" name="nft" onChange={props.handleNFTimg} />
                         <label htmlFor="icon-button-file">
-                            <img src={nft.nftimg} className={classes.img} alt="nftimg"/>
+                            <img src={nft.nftImageUrl} className={classes.img} alt="nftImageUrl"/>
                         </label>
                     </form>
                     <br/>
@@ -98,7 +100,7 @@ export default function NFTViewModal(props) {
                     <form>
                         <input accept="image/*" className={classes.imginput} id="icon-button-file" type="file" name="detail" onChange={props.handleDetailimg} />
                         <label htmlFor="icon-button-file">
-                            <img src={nft.detailImg} className={classes.img} alt="detailimg"/>
+                            <img src={nft.detailImageUrl} className={classes.img} alt="detailImageUrl"/>
                         </label>
                     </form>
                 </div>
@@ -111,7 +113,7 @@ export default function NFTViewModal(props) {
 
                     <TextField 
                     label="Name"
-                    defaultValue={nft.name}
+                    defaultValue={name}
                     onChange={props.handleNFTname}
                     className={classes.input}/><br/>
 
@@ -123,7 +125,7 @@ export default function NFTViewModal(props) {
 
                     <TextField 
                     label="Describtion"
-                    defaultValue={nft.describtion}
+                    defaultValue={nft.description}
                     onChange={props.handleNFTdescribe}
                     className={classes.input}/><br/>
 
@@ -144,7 +146,7 @@ export default function NFTViewModal(props) {
                     id="datetime-local"
                     label="Start Date"
                     type="datetime-local"
-                    defaultValue={nft.startDate}
+                    defaultValue={editTime}
                     sx={{ width: 300 }}
                     InputLabelProps={{
                         shrink: true,

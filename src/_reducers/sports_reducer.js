@@ -6,9 +6,6 @@ export default function (state={},action){
             return {...state, sports:action.payload}
             break;
     
-        case SPORT:
-            return {...state, sports:action.payload}
-            break;
         
         default:
             return state;

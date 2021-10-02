@@ -6,11 +6,14 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 import { mainColor } from '../../assets/colors';
 import SubmitBtn from '../../components/SubmitBtn';
 import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
 import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 
 function getModalStyle() {
     const top = 50;
@@ -56,8 +59,17 @@ function getModalStyle() {
 export default function UserModal(props) {
     const classes = useStyles();
     const [modalStyle] = React.useState(getModalStyle);
-    const revenue = props.user.revenueShareRate
+    const [open, setOpen] = React.useState(false);
+    const revenueShareRate = props.user.revenueShareRate?props.user.revenueShareRate:0
     const user = props.user
+    console.log(props.sports)
+    const handleClose = () => {
+      setOpen(false);
+    }
+  
+    const handleOpen = () => {
+      setOpen(true);
+    }
 
     const modalbody = (
       <div style={modalStyle} className={classes.paper}>
@@ -97,6 +109,24 @@ export default function UserModal(props) {
                     style: { width: "400px" },
                 }}/>
             </form>
+            <FormControl className={classes.formControl}>
+                <InputLabel id="demo-controlled-open-select-label">종목</InputLabel>
+                <Select
+                    labelId="demo-controlled-open-select-label"
+                    id="demo-controlled-open-select"
+                    open={open}
+                    onClose={handleClose}
+                    onOpen={handleOpen}
+                    value={user.sport}
+                    onChange={props.handleSelectSportChange}
+                >
+                  {
+                    // props.sports.map(sport=>{
+                    //   return(<MenuItem value={sport.id} key={sport.id}>{sport.name}</MenuItem>)
+                    // })
+                  }
+                </Select>
+            </FormControl>
             </div>
 
             
@@ -117,7 +147,7 @@ export default function UserModal(props) {
                 <div style={{fontWeight:"bold" }}>Revenue Share</div>
                 <Grid item xs>
                 <Slider
-                    value={parseInt(revenue)}
+                    value={parseInt(revenueShareRate)}
                     onChange={props.handleSliderChange}
                     aria-labelledby="input-slider"
                 />
@@ -127,7 +157,7 @@ export default function UserModal(props) {
                     <Input
                         className={classes.input}
                         name={"virspit"}
-                        value={revenue}
+                        value={revenueShareRate}
                         margin="dense"
                         onChange={props.handleRevenueChange}
                         inputProps={{
@@ -143,7 +173,7 @@ export default function UserModal(props) {
                     <Input
                         className={classes.input}
                         name={"team"}
-                        value={100-revenue}
+                        value={100-revenueShareRate}
                         margin="dense"
                         onChange={props.handleRevenueChange}
                         inputProps={{

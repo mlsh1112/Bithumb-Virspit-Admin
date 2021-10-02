@@ -5,15 +5,6 @@ import baseurl from '../config'
 const PRODUCT_PORT = baseurl.product_port
 
 
-let headers = {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: '',
-    },
-};
-
-
 export const getproducts = () => axios.get(PRODUCT_PORT+'/product')
 export const searchproduct = () => axios.get()
 

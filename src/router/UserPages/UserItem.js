@@ -3,19 +3,12 @@ import Button from '@material-ui/core/Button'
 import { mainColor } from '../../assets/colors'
 import UserModal from './UserModal'
 
-import {useDispatch} from 'react-redux'
-import {callSport} from '../../_actions/sports_action'
 
 export default function UserItem(props) {
     const [user,setUser] = useState(props.user)
     const [open,setOpen] = useState(false)
-    const [sport,setSport] = useState("") 
-    const dispatch = useDispatch()
-    
-    useEffect(()=>{
-        //dispatch(callSport).payload.then(res=>setSport(res.data))
-    },[])
-    
+    const [sport,setSport] = useState("")
+
     const handleRadioChange = (e) => {
         e.preventDefault()
         setUser({
@@ -31,6 +24,7 @@ export default function UserItem(props) {
     }
 
     const handleClose = () => {
+        setUser(props.user)
         setOpen(false)
     }
 
@@ -64,7 +58,7 @@ export default function UserItem(props) {
     const handleSliderChange = (e, newValue) => {
         setUser({
             ...user,
-            revenue:newValue
+            revenueShareRate:newValue
         })
     };
 
@@ -72,12 +66,12 @@ export default function UserItem(props) {
         if(event.target.name==='virspit')
             setUser({
                 ...user,
-                revenue:event.target.value === '' ? '' : Number(event.target.value)
+                revenueShareRate:event.target.value === '' ? '' : Number(event.target.value)
             })
          else
             setUser({
                 ...user,
-                revenue:event.target.value === '' ? '' : Number(100 - event.target.value)
+                revenueShareRate:event.target.value === '' ? '' : Number(100 - event.target.value)
             })
         
 
@@ -111,6 +105,7 @@ export default function UserItem(props) {
                     <Button color="secondary" onClick={handleDelete}>Delete</Button>
                     <UserModal
                         openModal={open}
+                        sports = {props.sports}
                         handleClose={handleClose}
                         handleEdit={handleEdit}
                         handleNameChange={handleNameChange}

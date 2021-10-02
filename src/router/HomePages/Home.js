@@ -8,7 +8,10 @@ import NFTcreatePage from '../NFTPages/NFTcreate/NFTcreatePage'
 import PaymentPage from '../PaymentPages/PaymentPage'
 import AdvertisementPage from '../AdvertisementPages/AdvertisementPage'
 import './Home.css'
+
+
 export default function Home({match,history}) {
+    
     return (
         <div className="Home"> 
             <section className="menu">

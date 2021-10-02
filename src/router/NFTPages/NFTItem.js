@@ -34,7 +34,6 @@ export default function NFTItem(props) {
     useEffect(() => {
         getplayer(nft.teamPlayerId)
         .then(res=>{
-            console.log(res.data.data)
             setName(res.data.data.name)
         })
     }, [])

@@ -19,3 +19,6 @@ export const searchproduct = () => axios.get()
 
 export const getplayers = () => axios.get(PRODUCT_PORT+'/team-player')
 export const getplayer = (id) => axios.get(PRODUCT_PORT+'/team-player/'+id)
+
+export const getsports = () => axios.get(PRODUCT_PORT+'/sports')
+export const getsport = (id) => axios.get(PRODUCT_PORT+'/sports'+id)

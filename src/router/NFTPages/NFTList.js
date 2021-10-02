@@ -11,8 +11,8 @@ export default function NFTList() {
         <div>
             <ul>
                 {
-                    nfts.map((nft)=>{
-                        return (<NFTItem nft={nft}></NFTItem>)
+                    nfts.map((nft,i)=>{
+                        return (<NFTItem key={i} nft={nft}></NFTItem>)
                     })
                 }
             </ul>

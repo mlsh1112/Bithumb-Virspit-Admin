@@ -1,4 +1,4 @@
-import {SPORTS_LIST} from '../_actions/types'
+import {SPORTS_LIST,SPORT} from '../_actions/types'
 
 export default function (state={},action){
     switch (action.type) {
@@ -6,6 +6,10 @@ export default function (state={},action){
             return {...state, sports:action.payload}
             break;
     
+        case SPORT:
+            return {...state, sports:action.payload}
+            break;
+        
         default:
             return state;
     }

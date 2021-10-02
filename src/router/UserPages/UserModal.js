@@ -56,7 +56,7 @@ function getModalStyle() {
 export default function UserModal(props) {
     const classes = useStyles();
     const [modalStyle] = React.useState(getModalStyle);
-    const revenue = props.user.revenue
+    const revenue = props.user.revenueShareRate
     const user = props.user
 
     const modalbody = (
@@ -65,7 +65,7 @@ export default function UserModal(props) {
             <form noValidate autoComplete="off" >
                 <TextField 
                   label="이름"
-                  defaultValue={user.name}
+                  defaultValue={user.name?user.name:''}
                   onChange={props.handleNameChange}
                   InputProps={{
                     style: { width: "400px" },
@@ -91,7 +91,7 @@ export default function UserModal(props) {
             <form noValidate autoComplete="off" >
                 <TextField 
                   label="종목"
-                  defaultValue={user.sport}
+                  defaultValue={user.sport?user.sport:""}
                   onChange={props.handleSportChange}
                   InputProps={{
                     style: { width: "400px" },
@@ -105,7 +105,7 @@ export default function UserModal(props) {
             <form noValidate autoComplete="off" >
                 <TextField 
                   label="설명"
-                  defaultValue={user.describe}
+                  defaultValue={user.description?user.description:""}
                   onChange={props.handleDescriptionChange}
                   InputProps={{
                     style: { width: "400px" },

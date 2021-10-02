@@ -1,11 +1,20 @@
-import React from 'react'
+import React,{useState, useEffect} from 'react'
 import Button from '@material-ui/core/Button'
 import { mainColor } from '../../assets/colors'
 import UserModal from './UserModal'
 
+import {useDispatch} from 'react-redux'
+import {callSport} from '../../_actions/sports_action'
+
 export default function UserItem(props) {
-    const [user,setUser] = React.useState(props.user)
-    const [open,setOpen] = React.useState(false)
+    const [user,setUser] = useState(props.user)
+    const [open,setOpen] = useState(false)
+    const [sport,setSport] = useState("") 
+    const dispatch = useDispatch()
+    
+    useEffect(()=>{
+        //dispatch(callSport).payload.then(res=>setSport(res.data))
+    },[])
     
     const handleRadioChange = (e) => {
         e.preventDefault()
@@ -85,7 +94,7 @@ export default function UserItem(props) {
 
     const userTypeLable = (
         <div style={labelstyle}>
-                {user.type==='player'?<>Player</>:<>Team</>}
+                {user.type==='"PLAYER"'?<>Player</>:<>Team</>}
         </div>
     ) 
     

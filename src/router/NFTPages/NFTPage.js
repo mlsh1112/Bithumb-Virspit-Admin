@@ -7,6 +7,8 @@ import {mainColor} from '../../assets/colors'
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import NFTList from './NFTList';
+import { useDispatch } from 'react-redux'
+import { callSports } from '../../_actions/sports_action'
 
 const useStyles = makeStyles((theme) => ({
     search: {
@@ -32,7 +34,14 @@ export default function NFTPage({history}) {
     const [searchuser, setSearchUser] = React.useState("");
     const [selectsport, setSelectSport] = React.useState('');
     const [searchNFT, setSearchNFT] = React.useState('')
+    const [sports, setSports] = React.useState([])
+    const dispatch = useDispatch()
 
+    React.useEffect(()=>{
+        dispatch(callSports).payload.then(res=>{
+          setSports(res.data)
+        })
+    },[])
     const handleSelectSportChange = (event) => {
         setSelectSport(event.target.value);
     };
@@ -61,7 +70,8 @@ export default function NFTPage({history}) {
                     handleSelectSportChange={handleSelectSportChange} 
                     handleSearchUser={handleSearchUser}
                     handleUserSearchSubmit={handleUserSearchSubmit}
-                    sport={selectsport}></UserSearch>
+                    sport={selectsport}
+                    sports={sports}></UserSearch>
                 <form noValidate autoComplete="off" onSubmit={handleNFTsubmit} >
                     <TextField 
                     label="NFT 명"

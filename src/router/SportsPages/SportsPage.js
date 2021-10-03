@@ -7,6 +7,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import {mainColor} from '../../assets/colors'
 import SportModal from './SportModal';
 import SportsList from './SportsList';
+import { updatesport } from '../../api/API';
 
 const useStyles = makeStyles((theme) => ({
   search: {
@@ -34,8 +35,15 @@ const useStyles = makeStyles((theme) => ({
 export default function SportsPage() {
     const classes = useStyles()
     const [open, setOpen] = React.useState(false)
+
+    const initialSport = {
+      name:"",
+      iconUrl:"",
+    }
+    const [sport,setSport] = React.useState(initialSport)
     const [updateKeyword,setUpdateKeyword] = React.useState("")
     const [searchKeyword,setSearchKeyword] = React.useState("")
+    const fReader = new FileReader();
 
     const handleOpen = () => {
       setOpen(true);
@@ -45,16 +53,35 @@ export default function SportsPage() {
       setOpen(false);
     }
     const handleUpload = () => {
+      console.log(JSON.stringify(sport))
+
+      updatesport(JSON.stringify(sport))
+      .then(res=>console.log("UPLOAD SUCCESS - SPORT"))
+      .catch(err=>console.log(err))
+      
+      setSport(initialSport)
       setOpen(false);
     }
-    const handleUpdateChange = (event) => {
-      setUpdateKeyword(event.target.value);
+    const handleUpdateChange = (e) => {
+        setSport({
+          ...sport,
+          name:e.target.value
+      })
     };
 
     const handleSearchChange = (event) => {
       setSearchKeyword(event.target.value);
     };
-    
+    const handleImage = (e) =>{
+      fReader.readAsDataURL(e.target.files[0]);
+      fReader.onloadend = function(event){
+          setSport({
+              ...sport,
+              iconUrl:event.target.result
+          })
+      }
+      
+  }
     
     return (
         <div>
@@ -79,6 +106,7 @@ export default function SportsPage() {
                 handleClose={handleClose}
                 handleUpload={handleUpload}
                 handleChange={handleUpdateChange}
+                handleImage={handleImage}
                 modalKind={"upload"}
                 sport={""}>
               </SportModal>

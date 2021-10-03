@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import UserSearch from '../../components/UserSearch';
 import Paper from '@material-ui/core/Paper';
@@ -7,6 +7,9 @@ import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import {mainColor} from '../../assets/colors'
 import UserModal from './UserModal';
+import { useDispatch } from 'react-redux'
+import { callSports } from '../../_actions/sports_action'
+
 const useStyles = makeStyles((theme) => ({
     search: {
         marginRight: theme.spacing(3),
@@ -28,16 +31,24 @@ export default function UserPage() {
     const initalUser = {
         name:"",
         sport:"",
-        describe:"",
+        description:"",
         type:"",
-        revenue:0
+        revenueShareRate:0,
+        sportsId: 0
     }
 
     const [newuser,setNewuser] = React.useState(initalUser)
     const [open, setOpen] = React.useState(false)
     const [selectsport, setSelectSport] = React.useState('');
     const [searchuser, setSearchUser] = React.useState("");
-    
+    const [sports,setSports] = React.useState([])
+    const dispatch = useDispatch()
+
+    useEffect(()=>{
+        dispatch(callSports).payload.then(res=>{
+          setSports(res.data)
+        })
+    },[])
 
     const handleOpen = () => {
         setOpen(true);
@@ -88,7 +99,7 @@ export default function UserPage() {
     const handleSliderChange = (e, newValue) => {
         setNewuser({
             ...newuser,
-            revenue:newValue
+            revenueShareRate:newValue
         })
     };
     const handleRadioChange = (e) => {
@@ -102,12 +113,12 @@ export default function UserPage() {
         if(event.target.name==='virspit')
         setNewuser({
                 ...newuser,
-                revenue:event.target.value === '' ? '' : Number(event.target.value)
+                revenueShareRate:event.target.value === '' ? '' : Number(event.target.value)
             })
          else
          setNewuser({
                 ...newuser,
-                revenue:event.target.value === '' ? '' : Number(100 - event.target.value)
+                revenueShareRate:event.target.value === '' ? '' : Number(100 - event.target.value)
             })
     };
     return (
@@ -117,6 +128,7 @@ export default function UserPage() {
                     handleSelectSportChange={handleSelectSportChange} 
                     handleSearchUser={handleSearchUser}
                     handleUserSearchSubmit={handleUserSearchSubmit}
+                    sports = {sports}
                     sport={selectsport}>
                     </UserSearch>
             </Paper>
@@ -127,6 +139,7 @@ export default function UserPage() {
                 <UserModal
                     openModal={open}
                     user={newuser}
+                    sports = {sports}
                     handleClose={handleClose}
                     handleUpload={handleUpload}
                     handleNameChange={handleNameChange}

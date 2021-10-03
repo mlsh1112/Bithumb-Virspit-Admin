@@ -5,7 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
-
+import SportsList from '../router/SportsPages/SportsList';
 const useStyles = makeStyles((theme) => ({
     search: {
       marginLeft: theme.spacing(5),
@@ -18,8 +18,9 @@ const useStyles = makeStyles((theme) => ({
 export default function UserSearch(props) {
     const classes = useStyles()
     const [open, setOpen] = React.useState(false);
-    
     const sport = props.sport || ""
+    
+    
 
     const handleClose = () => {
       setOpen(false);
@@ -28,6 +29,7 @@ export default function UserSearch(props) {
     const handleOpen = () => {
       setOpen(true);
     }
+
 
     return (
         <div style={{display:"flex"}}>
@@ -42,9 +44,11 @@ export default function UserSearch(props) {
                     value={sport}
                     onChange={props.handleSelectSportChange}
                 >
-                <MenuItem value={"Soccer"}>Soccer</MenuItem>
-                <MenuItem value={"Baseball"}>Baseball</MenuItem>
-                <MenuItem value={"Basketball"}>Basketball</MenuItem>
+                  {
+                    props.sports.map(sport=>{
+                      return(<MenuItem value={sport.id} key={sport.id}>{sport.name}</MenuItem>)
+                    })
+                  }
                 </Select>
             </FormControl>
 

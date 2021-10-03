@@ -1,11 +1,16 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import UserItem from './UserItem'
 
+import {useDispatch} from 'react-redux'
+import { callPlayers } from '../../_actions/players_action';
 export default function UserList() {
-    const [users,setUsers] = useState([
-        {name:"Son Heung min" , type:"player",revenue:"30",sport:"soccer",describe:"He is soccer player."},
-        {name:"Tottenham Hotspur Football Club",type:"team",revenue:"10",sport:"soccer",describe:"It is soccer team."}
-    ])
+    const [users,setUsers] = useState([])
+    const dispatch = useDispatch()
+    
+    useEffect(()=>{
+        dispatch(callPlayers).payload.then(res=>setUsers(res.data))
+    },[])
+    
 
     return (
         <div>

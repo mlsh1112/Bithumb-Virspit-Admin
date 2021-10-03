@@ -1,12 +1,14 @@
-import React from 'react'
+import React,{useState, useEffect} from 'react'
 import Button from '@material-ui/core/Button'
 import { mainColor } from '../../assets/colors'
 import UserModal from './UserModal'
 
+
 export default function UserItem(props) {
-    const [user,setUser] = React.useState(props.user)
-    const [open,setOpen] = React.useState(false)
-    
+    const [user,setUser] = useState(props.user)
+    const [open,setOpen] = useState(false)
+    const [sport,setSport] = useState("")
+
     const handleRadioChange = (e) => {
         e.preventDefault()
         setUser({
@@ -22,6 +24,7 @@ export default function UserItem(props) {
     }
 
     const handleClose = () => {
+        setUser(props.user)
         setOpen(false)
     }
 
@@ -55,7 +58,7 @@ export default function UserItem(props) {
     const handleSliderChange = (e, newValue) => {
         setUser({
             ...user,
-            revenue:newValue
+            revenueShareRate:newValue
         })
     };
 
@@ -63,12 +66,12 @@ export default function UserItem(props) {
         if(event.target.name==='virspit')
             setUser({
                 ...user,
-                revenue:event.target.value === '' ? '' : Number(event.target.value)
+                revenueShareRate:event.target.value === '' ? '' : Number(event.target.value)
             })
          else
             setUser({
                 ...user,
-                revenue:event.target.value === '' ? '' : Number(100 - event.target.value)
+                revenueShareRate:event.target.value === '' ? '' : Number(100 - event.target.value)
             })
         
 
@@ -85,7 +88,7 @@ export default function UserItem(props) {
 
     const userTypeLable = (
         <div style={labelstyle}>
-                {user.type==='player'?<>Player</>:<>Team</>}
+                {user.type==='"PLAYER"'?<>Player</>:<>Team</>}
         </div>
     ) 
     
@@ -102,6 +105,7 @@ export default function UserItem(props) {
                     <Button color="secondary" onClick={handleDelete}>Delete</Button>
                     <UserModal
                         openModal={open}
+                        sports = {props.sports}
                         handleClose={handleClose}
                         handleEdit={handleEdit}
                         handleNameChange={handleNameChange}

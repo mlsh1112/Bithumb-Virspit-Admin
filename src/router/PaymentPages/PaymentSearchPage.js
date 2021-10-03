@@ -7,6 +7,8 @@ import DateRangePicker from '@mui/lab/DateRangePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import Box from '@mui/material/Box';
+import { useDispatch } from 'react-redux'
+import { callSports } from '../../_actions/sports_action'
 
 const useStyles = makeStyles((theme) => ({
     search: {
@@ -33,6 +35,14 @@ export default function PaymentSearchPage() {
     const [selectsport, setSelectSport] = React.useState('');
     const [searchNFT, setSearchNFT] = React.useState('')
     const [date, setDate] = React.useState([null, null]);
+    const [sports,setSports] = React.useState([])
+    const dispatch = useDispatch()
+
+    React.useEffect(()=>{
+        dispatch(callSports).payload.then(res=>{
+          setSports(res.data)
+        })
+    },[])
     const handleSelectSportChange = (event) => {
         setSelectSport(event.target.value);
     };
@@ -76,7 +86,8 @@ export default function PaymentSearchPage() {
                     handleSelectSportChange={handleSelectSportChange} 
                     handleSearchUser={handleSearchUser}
                     handleUserSearchSubmit={handleUserSearchSubmit}
-                    sport={selectsport}></UserSearch>
+                    sport={selectsport}
+                    sports={sports}></UserSearch>
                 <form noValidate autoComplete="off" onSubmit={handleNFTsubmit} >
                     <TextField 
                     label="NFT 명"

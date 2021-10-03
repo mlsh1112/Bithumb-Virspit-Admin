@@ -217,8 +217,8 @@ export default function NFTCreatePage({history}) {
                             onChange={handleNFTsport}
                         >
                             {
-                                sports.map(sport=>{
-                                    return (<MenuItem value={sport.id}>{sport.sport}</MenuItem>)
+                                sports.map((sport,i)=>{
+                                    return (<MenuItem key={i} value={sport.id}>{sport.sport}</MenuItem>)
                                 })
                             }
                         </Select>
@@ -234,8 +234,8 @@ export default function NFTCreatePage({history}) {
                             onChange={handleNFTplayer}
                         >
                             {
-                                player.map(item=>{
-                                    return (<MenuItem value={item}>{item}</MenuItem>)
+                                player.map((item,i)=>{
+                                    return (<MenuItem key={i} value={item}>{item}</MenuItem>)
                                 })
                             }
                         </Select>

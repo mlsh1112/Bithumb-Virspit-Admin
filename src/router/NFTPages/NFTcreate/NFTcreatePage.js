@@ -4,74 +4,77 @@ import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import Checkbox from '@material-ui/core/Checkbox';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import SubmitBtn from '../../../components/SubmitBtn';
+import {SubmitBtn} from '../../../components/SubmitBtn';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import useStyles from './createStyle'
+import {getplayersBysportID, getsports,uploadproducts} from '../../../api/API'
 
 const players = new Map()
 export default function NFTCreatePage({history}) {
     const classes = useStyles()
-    const fReader = new FileReader();
+    const fReader = new FileReader()
     const initialNFT = {
-        nftimg:"",
-        detailImg:"",
+        nftImageFile:"",
+        detailImageFile:"",
         title:"",
-        name:"",
         sport:"",
-        player:"",
-        describtion:"",
+        teamPlayerId:"",
+        description:"",
         price:0,
-        count:0,
-        startDate:"",
+        remainedCount:0,
+        startDateTime:"",
         exhibition:false
     }
     const [nft,setNFT] = React.useState(initialNFT)
-    const [sports,setSports] = React.useState([
-        {id:1, sport:"soccer"},
-        {id:2, sport:"baseball"},
-        {id:3, sport:"basketball"},])
-    const [sport,setSport] = React.useState("")
+    const [sports,setSports] = React.useState([])
     const [player,setPlayer] = React.useState([])
+    const [previewImg, setPreview] = React.useState({
+        nftImg:"",
+        detailImg:""
+    })
 
-    const exdata = [
-        [],
-        ["park", "son","Tottenham"],
-        ["park"],
-        ["kim"],
-    ]
+    React.useEffect(()=>{
+        getsports()
+        .then(res=>setSports(res.data.data))
+        .catch(err=>console.log(err))
+    },[])
+
     const handleNFTimg=(e)=>{
+         setNFT({
+                ...nft,
+                nftImageFile:e.target.files[0]
+        })
+
         fReader.readAsDataURL(e.target.files[0]);
         fReader.onloadend = function(event){
-            setNFT({
-                ...nft,
-                nftimg:event.target.result
+            setPreview({
+                ...previewImg,
+                nftImg:event.target.result
             })
         }
-        
+    
     }
 
     const handledetailimg=(e)=>{
+        setNFT({
+                ...nft,
+                detailImageFile:e.target.files[0]
+            })
         fReader.readAsDataURL(e.target.files[0]);
         fReader.onloadend = function(event){
-            setNFT({
-                ...nft,
+            setPreview({
+                ...previewImg,
                 detailImg:event.target.result
             })
         }
-        
     }
 
     const handleNFTsubmit=(e)=>{
         e.preventDefault()
-    }
-    const handleNFTname=(e)=>{
-        setNFT({
-            ...nft,
-            name:e.target.value
-        })
+        
     }
     const handleNFTtitle=(e)=>{
         setNFT({
@@ -79,7 +82,7 @@ export default function NFTCreatePage({history}) {
             title:e.target.value
         })
     }
-    const handleNFTsport=(e)=>{
+    const handleNFTsport= (e)=>{
         e.preventDefault()
         setNFT({
             ...nft,
@@ -87,29 +90,32 @@ export default function NFTCreatePage({history}) {
         })
 
         if(!players.has(e.target.value)){
-            players.set(e.target.value,exdata[e.target.value])
+            getplayersBysportID(String(e.target.value))
+            .then(res=>{
+                players.set(e.target.value,res.data.data)
+                setPlayer(res.data.data)
+            })
         }
-        
-        setPlayer(players.get(e.target.value))
+        else
+            setPlayer(players.get(e.target.value))
     
     }
-
     const handleNFTplayer =(e)=>{
         setNFT({
             ...nft,
-            player:e.target.value
+            teamPlayerId:e.target.value
         })
     }
     const handleNFTdescribe=(e)=>{
         setNFT({
             ...nft,
-            describtion:e.target.value
+            description:e.target.value
         })
     }
     const handleNFTprice=(e)=>{
         setNFT({
             ...nft,
-            price:e.target.value
+            price:parseInt(e.target.value)
         })
     }
     const handleNFTcount=(e)=>{
@@ -119,9 +125,10 @@ export default function NFTCreatePage({history}) {
         })
     }
     const handleStartdate=(e)=>{
+        let time = (e.target.value).split('T').join(' ')+':00'
         setNFT({
             ...nft,
-            startDate:e.target.value
+            startDateTime:time
         })
     }
     const handleExhibition=(e)=>{
@@ -132,8 +139,26 @@ export default function NFTCreatePage({history}) {
     }
     const handleSubmit =()=>{
         console.log(nft)
-        alert("upload")
-        history.goBack()
+        
+        const form = new FormData();
+        form.append('description', nft.description);
+        form.append('detailImageFile', nft.detailImageFile);
+        form.append('exhibition', nft.exhibition);
+        form.append('nftImageFile', nft.nftImageFile);
+        form.append('price', nft.price);
+        form.append('remainedCount', nft.remainedCount); // 최대 100개
+        form.append('startDateTime', nft.startDateTime);
+        form.append('teamPlayerId', nft.teamPlayerId);
+        form.append('title', nft.title);
+
+        uploadproducts(form)
+        .then(res=>{
+            alert("UPLOAD SUCCESS")
+            history.goBack()
+        })
+        .catch(err=>console.log(err))
+
+
     }
 
     const handleBackBtn=()=>{
@@ -155,19 +180,14 @@ export default function NFTCreatePage({history}) {
                     <div>
                     <div style={{marginLeft:'120px', fontSize:'bold'}}>Upload NFT picture</div>
                         {
-                            (nft.nftimg)?
+                            (nft.nftImageFile)?
                             (<div >
-                                <img src={nft.nftimg} className={classes.img} alt="nftimg"/>  <br/>
+                                <img src={previewImg.nftImg} className={classes.img} alt="nftimg"/>  <br/>
                                 <input accept="image/*" id="icon-button-file" style={{marginLeft:'100px'}} type="file" name="nft" onChange={handleNFTimg} />
                             </div>)
                             :
                             (<div className={classes.img}>
                                 <input accept="image/*" id="icon-button-file" type="file" name="nft" onChange={handleNFTimg} />
-                                {/* <label htmlFor="icon-button-file">
-                                    <IconButton color="primary" aria-label="upload picture" component="span">
-                                    <PhotoCamera />
-                                    </IconButton><br/>
-                                </label> */}
                             </div>)
                         }
                         
@@ -176,20 +196,15 @@ export default function NFTCreatePage({history}) {
                     <div>
                     <div style={{marginLeft:'120px', fontSize:'bold'}}>Upload Detail picture</div>
                         {
-                            (nft.detailImg)?
+                            (nft.detailImageFile)?
                             (<div >
-                                <img src={nft.detailImg} className={classes.img} alt="detailimg"/><br/>
+                                <img src={previewImg.detailImg} className={classes.img} alt="detailimg"/><br/>
                                 <input accept="image/*" id="icon-button-file" style={{marginLeft:'100px'}} type="file" name="detail" onChange={handledetailimg}/>
                                 
                             </div>)
                             :
                             (<div className={classes.img}>
                                 <input accept="image/*" id="icon-button-file"  type="file" name="detail" onChange={handledetailimg}/>
-                                {/* <label htmlFor="icon-button-file">
-                                    <IconButton color="primary" aria-label="upload picture" component="span">
-                                    <PhotoCamera />
-                                    </IconButton>
-                                </label> */}
                             </div>)
                         }
                     </div>
@@ -200,11 +215,6 @@ export default function NFTCreatePage({history}) {
                     <TextField 
                     label="Title"
                     onChange={handleNFTtitle}
-                    className={classes.input}/><br/>
-
-                    <TextField 
-                    label="Name"
-                    onChange={handleNFTname}
                     className={classes.input}/><br/>
 
                     <FormControl className={classes.sportSelect}>
@@ -218,7 +228,7 @@ export default function NFTCreatePage({history}) {
                         >
                             {
                                 sports.map((sport,i)=>{
-                                    return (<MenuItem key={i} value={sport.id}>{sport.sport}</MenuItem>)
+                                    return (<MenuItem key={i} value={sport.id}>{sport.name}</MenuItem>)
                                 })
                             }
                         </Select>
@@ -235,8 +245,9 @@ export default function NFTCreatePage({history}) {
                         >
                             {
                                 player.map((item,i)=>{
-                                    return (<MenuItem key={i} value={item}>{item}</MenuItem>)
+                                    return (<MenuItem key={i} value={item.id}>{item.name}</MenuItem>)
                                 })
+
                             }
                         </Select>
                     </FormControl>

@@ -4,7 +4,7 @@ import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
 
 import { mainColor } from '../../assets/colors';
-import SubmitBtn from '../../components/SubmitBtn';
+import {SubmitBtn} from '../../components/SubmitBtn';
 
 
 function getModalStyle() {

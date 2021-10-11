@@ -8,7 +8,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { mainColor } from '../../assets/colors';
-import SubmitBtn from '../../components/SubmitBtn';
+import {SubmitBtn} from '../../components/SubmitBtn';
 import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
 import Input from '@material-ui/core/Input';
@@ -62,15 +62,13 @@ export default function UserModal(props) {
     const [open, setOpen] = React.useState(false);
     const revenueShareRate = props.user.revenueShareRate?props.user.revenueShareRate:0
     const user = props.user
-    console.log(props.sports)
+
     const handleClose = () => {
       setOpen(false);
     }
-  
     const handleOpen = () => {
       setOpen(true);
     }
-
     const modalbody = (
       <div style={modalStyle} className={classes.paper}>
           <div className={classes.modalContent}>
@@ -90,8 +88,8 @@ export default function UserModal(props) {
             <form>
                 <FormControl component="fieldset" error={props.error} className={classes.selectTyep}>
                     <RadioGroup aria-label="quiz" name="quiz" value={props.type} onChange={props.handleRadioChange}>
-                    <FormControlLabel value="team" control={<Radio />} label="Team" />
-                    <FormControlLabel value="player" control={<Radio />} label="Player" />
+                    <FormControlLabel value="TEAM" control={<Radio />} label="Team" />
+                    <FormControlLabel value="PLAYER" control={<Radio />} label="Player" />
                     </RadioGroup>
                 </FormControl>
             </form>
@@ -100,16 +98,7 @@ export default function UserModal(props) {
             
             <div className={classes.modalContent}>
 
-            <form noValidate autoComplete="off" >
-                <TextField 
-                  label="종목"
-                  defaultValue={user.sport?user.sport:""}
-                  onChange={props.handleSportChange}
-                  InputProps={{
-                    style: { width: "400px" },
-                }}/>
-            </form>
-            <FormControl className={classes.formControl}>
+            <FormControl fullWidth>
                 <InputLabel id="demo-controlled-open-select-label">종목</InputLabel>
                 <Select
                     labelId="demo-controlled-open-select-label"
@@ -118,12 +107,16 @@ export default function UserModal(props) {
                     onClose={handleClose}
                     onOpen={handleOpen}
                     value={user.sport}
-                    onChange={props.handleSelectSportChange}
+                    defaultValue={user.sport}
+                    onChange={props.handleSportChange}
                 >
                   {
-                    // props.sports.map(sport=>{
-                    //   return(<MenuItem value={sport.id} key={sport.id}>{sport.name}</MenuItem>)
-                    // })
+                   props.sports?
+                      props.sports.map(sport=>{
+                        return(<MenuItem value={sport.id} key={sport.id}>{sport.name}</MenuItem>)
+                      })
+                    :
+                      <>LOADING</>
                   }
                 </Select>
             </FormControl>

@@ -8,12 +8,28 @@ const useStyles = makeStyles((theme) => ({
         color:"white",
         fontWeight:"bold",
         width:"250px"
+    },
+    smallBtn:{
+        backgroundColor:mainColor,
+        color:"white",
+        width:"50px",
+        fontSize:10,
+        fontWeight:"bold",
     }
   }));
-export default function SubmitBtn({value,onClick}) {
+export function SubmitBtn({value,onClick}) {
     const classes = useStyles();
     return (
         <Button variant="contained" disableElevation onClick={onClick} className={classes.button}>
+        {value}
+        </Button>
+    );
+}
+
+export function SubmitSmallBtn({value,onClick}) {
+    const classes = useStyles();
+    return (
+        <Button variant="contained" disableElevation onClick={onClick} className={classes.smallBtn}>
         {value}
         </Button>
     );

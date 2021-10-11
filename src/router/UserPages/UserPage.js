@@ -8,7 +8,12 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import {mainColor} from '../../assets/colors'
 import UserModal from './UserModal';
 import { useDispatch } from 'react-redux'
-import { callSports } from '../../_actions/sports_action'
+import { callSports  } from '../../_actions/sports_action'
+import { callPlayers } from '../../_actions/players_action';
+import { updateplayer, getplayerSearch, getplayersBysportID, getplayersBypage} from '../../api/API';
+import Pager from '../../components/Pager';
+
+let isSearch=false
 
 const useStyles = makeStyles((theme) => ({
     search: {
@@ -26,6 +31,8 @@ const useStyles = makeStyles((theme) => ({
         fontSize:"35px"
       },
   }));
+
+  const playerList = new Map()
 export default function UserPage() {
     const classes = useStyles()
     const initalUser = {
@@ -40,15 +47,31 @@ export default function UserPage() {
     const [newuser,setNewuser] = React.useState(initalUser)
     const [open, setOpen] = React.useState(false)
     const [selectsport, setSelectSport] = React.useState('');
-    const [searchuser, setSearchUser] = React.useState("");
+    const [searchplayer, setSearchUser] = React.useState("");
+    const [searchResult, setSearch] = React.useState([])
     const [sports,setSports] = React.useState([])
+    const [players,setPlayers] = React.useState([])
+    const [page,setPage]= React.useState(1)
+    const [total,setTotal] = React.useState(0)
+
     const dispatch = useDispatch()
+
 
     useEffect(()=>{
         dispatch(callSports).payload.then(res=>{
           setSports(res.data)
         })
+        dispatch(callPlayers).payload.then(res=>setTotal(res.data.length))
+        
+        isSearch=false
     },[])
+
+    useEffect(()=>{
+        setSearch([])
+        getplayersBypage({page:page,size:5})
+        .then(res=>setSearch(res.data.data))
+        .catch(err=>console.log(err))
+    },[page])
 
     const handleOpen = () => {
         setOpen(true);
@@ -57,42 +80,71 @@ export default function UserPage() {
         setOpen(false)
     }
 
-    const handleSelectSportChange = (event) => {
-        setSelectSport(event.target.value);
+    const handleSelectSportChange = (e) => {
+        isSearch=false
+        setSelectSport(e.target.value);
+        if(!playerList.has(e.target.value)){
+            getplayersBysportID(String(e.target.value))
+            .then(res=>{
+                playerList.set(e.target.value,res.data.data)
+                setPlayers(res.data.data)
+            })
+        }
+        else
+            setPlayers(playerList.get(e.target.value))
     };
-    const handleSearchUser = (e) =>{
+    const handleSearchPlayer = (e) =>{
+        isSearch=true
         setSearchUser(e.target.value)
-    }
-    const handleUserSearchSubmit =(e)=>{
-        console.log(searchuser,selectsport)
-        e.preventDefault()
+
+        getplayerSearch({sportsId:selectsport,name:e.currentTarget.getAttribute("name")})
+        .then(res=>{
+            setSearch([])
+            setSearch(res.data.data)
+            setTotal(res.data.data.length)
+            setPage(1)
+        })
+        .catch(err=>console.log(err))
     }
 
     const handleUpload = (e) =>{
         e.preventDefault()
-        console.log(newuser)
+        const data = {
+            name: newuser.name,
+            description: newuser.description,
+            type: newuser.type,
+            revenueShareRate: parseInt(newuser.revenueShareRate),
+            sportsId: parseInt(newuser.sport)
+          }
+          console.log(data)
+        updateplayer(data)
+        .then(res=>{
+            alert("UPLOAD SUCCESS - PLAYER OR TEAM")
+            window.location.replace("/home/user")
+        })
+        .catch(err=>console.log(err))
+
         setNewuser(initalUser)
         setOpen(false)
     }
     const handleNameChange=(e)=>{
-        e.preventDefault()
+        
         setNewuser({
             ...newuser,
             name:e.target.value
         })
     }
     const handleSportChange=(e)=>{
-        e.preventDefault()
         setNewuser({
             ...newuser,
             sport:e.target.value
         })
     }
     const handleDescriptionChange=(e)=>{
-        e.preventDefault()
+        
         setNewuser({
             ...newuser,
-            describe:e.target.value
+            description:e.target.value
         })
     }
 
@@ -103,7 +155,7 @@ export default function UserPage() {
         })
     };
     const handleRadioChange = (e) => {
-        e.preventDefault()
+        
         setNewuser({
             ...newuser,
             type:e.target.value
@@ -121,15 +173,21 @@ export default function UserPage() {
                 revenueShareRate:event.target.value === '' ? '' : Number(100 - event.target.value)
             })
     };
+
+    const handlePaging=(e)=>{
+        setPage(e.target.value)
+    }
     return (
         <div>
             <Paper className={classes.search}>
                 <UserSearch 
                     handleSelectSportChange={handleSelectSportChange} 
-                    handleSearchUser={handleSearchUser}
-                    handleUserSearchSubmit={handleUserSearchSubmit}
-                    sports = {sports}
-                    sport={selectsport}>
+                    handleSearchPlayer={handleSearchPlayer}
+                    //handleUserSearchSubmit={handleUserSearchSubmit}
+                    sport={selectsport}
+                    sports={sports}
+                    players={players}
+                    searchplayer={searchplayer}>
                     </UserSearch>
             </Paper>
             <Paper className={classes.list}>
@@ -151,7 +209,12 @@ export default function UserPage() {
                     modalKind={"upload"}
                 />
 
-                <UserList></UserList>
+                <UserList 
+                    sports={sports} 
+                    search={searchResult}
+                    isSearch={isSearch}></UserList>
+
+                <Pager page={page} count={5} total={total} paging={handlePaging}></Pager>
             </Paper>
         </div>
     )

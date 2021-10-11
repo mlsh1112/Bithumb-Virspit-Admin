@@ -1,25 +1,19 @@
-import React,{useState,useEffect} from 'react'
+import React from 'react'
 import NFTItem from './NFTItem'
-import {getproducts} from '../../api/API'
 
-export default function NFTList() {
-    const [nfts,setntfs] = useState([])
-
-    useEffect(() => {
-        getproducts()
-         .then(res=>setntfs(res.data.data))
-         .catch(err=>console.log(err))
-    }, [])
-
+export default function NFTList(props) {
     
-
     return (
         <div>
             <ul>
                 {
-                    nfts.map((nft,i)=>{
-                        return (<NFTItem key={i} nft={nft} ></NFTItem>)
-                    })
+                    props.resultNFT.length>0?
+                        props.resultNFT.map((search,i)=>{
+                                return (<NFTItem key={i} nft={search} sports={props.sports}></NFTItem>)
+                            })
+                    :
+                        <>데이터가 없습니다.</>
+                    
                 }
             </ul>
         </div>

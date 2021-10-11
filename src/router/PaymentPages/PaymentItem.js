@@ -9,20 +9,29 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import Button from '@mui/material/Button';
+import {getproductById ,editordermemo} from '../../api/API'
 
 export default function PaymentItem(props) {
-    const { row } = props;
-    const user = row.user
-    const NFT = row.NFT
-    const [open, setOpen] = React.useState(false);
-    const [memo,setMemo] = React.useState(row.memo)
-    
+    const { payment } = props
+    const [open, setOpen] = React.useState(false)
+    const [user,setUser] = React.useState(payment.member)
+    const [memo,setMemo] = React.useState(payment.memo)
+    const [nft,setNFT] = React.useState(payment.product)
+
     const handleMemo=(e)=>{
         setMemo(e.target.value)
     }
 
     const handleEdit=(e)=>{
-        row.memo=memo
+      const data = {
+          memo:memo,
+          orderId:payment.id
+      }
+      editordermemo(data)
+      .then(res=>console.log(res.data))
+      .catch(err=>console.log(err))
+
+      window.location.replace("/home/payment")
     }
     return (
       <React.Fragment>
@@ -37,12 +46,12 @@ export default function PaymentItem(props) {
             </IconButton>
           </TableCell>
           <TableCell component="th" scope="row">
-            {user.name}
+            {user.memberName}
           </TableCell>
-          <TableCell align="right">{NFT.title}</TableCell>
-          <TableCell align="right">{row.paymentnum}</TableCell>
-          <TableCell align="right">{row.date}</TableCell>
-          <TableCell align="right">{row.memo?"Y":"N"}</TableCell>
+          <TableCell >{nft.title}</TableCell>
+          {/* <TableCell >{"payment number"}</TableCell> */}
+          <TableCell >{payment.orderDate}</TableCell>
+          <TableCell>{payment.memo?"Y":"N"}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -52,17 +61,17 @@ export default function PaymentItem(props) {
                   주문자
                 </Typography>
                 <div>
-                    <li>Name : {user.name}</li>
+                    <li>Name : {user.memberName}</li>
                     <li>E-mail : {user.email}</li>
-                    <li>Dialog : {user.dialog}</li>
+                    <li>Dialog : {user.phoneNumber}</li>
                 </div>
                 <br/>
                 <Typography variant="h6" gutterBottom component="div">
                   상품명
                 </Typography>
                 <div>
-                    <li>Title : {NFT.title}</li>
-                    <li>Count : {NFT.count}</li>
+                    <li>Title : {nft.title}</li>
+                    <li>Price : {nft.price}</li>
                 </div>
                 <br/>
                 <Typography variant="h6" gutterBottom component="div">
@@ -70,7 +79,7 @@ export default function PaymentItem(props) {
                 </Typography>
                 <TextareaAutosize
                     aria-label="minimum height"
-                    defaultValue={row.memo}
+                    defaultValue={payment.memo}
                     minRows={4}
                     placeholder="Write Memo"
                     style={{ width: 600 }}

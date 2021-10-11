@@ -5,33 +5,40 @@ import { editsport,deletesport } from '../../api/API';
 export default function SportsItem(props) {
     const [sport,setSport] = useState(props.sport)
     const [open, setOpen] = React.useState(false)
-    const fReader = new FileReader();
     const handleDelete = () =>{
         deletesport(sport.id)
-        .then(res=>console.log("DELETE SUCCESS - SPORT"))
+        .then(res=>{
+            alert("DELETE SUCCESS - SPORT")
+            window.location.replace("/home")
+        })
         .catch(err=>console.log(err))
     }
     const handleOpen = () =>{
         setOpen(true)
     }
     const handleEdit = () =>{
-        editsport(sport.id,JSON.stringify(sport))
-        .then(res=>console.log("UPDATE SUCCESS"))
+    console.log(sport)
+        const form = new FormData();
+        form.append("name", sport.name);
+        form.append("iconFile", sport.iconUrl);
+        form.append("id", sport.id);
+
+        editsport(sport.id,form)
+        .then(res=>{alert("UPDATE SUCCESS")
+        window.location.replace("/home")
+        })
         .catch(err=>console.log(err))
-        console.log(sport.id,JSON.stringify(sport))
+
         setOpen(false)
     }
     const handleClose = () => {
         setOpen(false);
     }
     const handleImage = (e) =>{
-        fReader.readAsDataURL(e.target.files[0]);
-        fReader.onloadend = function(event){
-            setSport({
-                ...sport,
-                iconUrl:event.target.result
-            })
-        }
+        setSport({
+            ...sport,
+            iconUrl:e.target.files[0]
+        })
         
     }
 

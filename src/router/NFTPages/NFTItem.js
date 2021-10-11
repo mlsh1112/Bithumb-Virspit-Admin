@@ -2,7 +2,7 @@ import React,{useEffect} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
 import NFTViewModal from './NFTViewModal';
-import {getplayer} from '../../api/API'
+import {getplayersByname,editproducts} from '../../api/API'
 
 const useStyles = makeStyles((theme) => ({
     item:{
@@ -26,17 +26,14 @@ const useStyles = makeStyles((theme) => ({
 export default function NFTItem(props) {
     const classes = useStyles()
     const [nft,setNFT] = React.useState(props.nft)
-    const [name,setName] = React.useState("")
     const [open,setOpen] = React.useState(false)
     const [nftedit,setEdit] = React.useState(false)
-
+    const [player,setPlayer] = React.useState(props.nft.teamPlayerInfo.name)
+    const [editImg,SeteditImg] = React.useState({
+        nftImageFile:"",
+        detailImageFile:""
+    })
     const fReader = new FileReader();
-    useEffect(() => {
-        getplayer(nft.teamPlayerId)
-        .then(res=>{
-            setName(res.data.data.name)
-        })
-    }, [])
 
     const handleClick=()=>{
         setEdit(false)
@@ -44,6 +41,7 @@ export default function NFTItem(props) {
     }
 
     const handleClose = () => {
+        setNFT(props.nft)
         setOpen(false)
         setEdit(false)
     }
@@ -53,35 +51,65 @@ export default function NFTItem(props) {
     }
 
     const handleUpdate=()=>{
-        console.log(nft)
+        const form = new FormData();
+        getplayersByname(player)
+        .then(res=>{
+            form.append('teamPlayerId', res.data.data[0].id)
+            form.append('description', nft.description);
+            form.append('exhibition', nft.exhibition);
+            form.append('price', nft.price);
+            form.append('remainedCount', nft.remainedCount); // 최대 100개
+            form.append('startDateTime', nft.startDateTime);
+            
+            form.append('title', nft.title);
+
+            if(nft.nftImageFile)
+                form.append('nftImageFile', nft.nftImageFile);
+            if(nft.detailImageFile)
+                form.append('detailImageFile', nft.detailImageFile);
+
+            
+            editproducts(nft.id,form)
+            .then(res=>alert("UPDATE SUCCESS"))
+            .catch(err=>{
+                console.log(err)
+                setNFT(props.nft)
+            })
+        })
+        
+        
+        
         setOpen(false)
     }
     const handleNFTimg=(e)=>{
+        setNFT({
+            ...nft,
+            nftImageFile:e.target.files[0]
+        })
+
         fReader.readAsDataURL(e.target.files[0]);
         fReader.onloadend = function(event){
-            setNFT({
+            SeteditImg({
                 ...nft,
-                nftimg:event.target.result
+                nftImageFile:event.target.result
             })
         }
         
     }
 
     const handleDetailimg=(e)=>{
+        setNFT({
+            ...nft,
+            detailImageFile:e.target.files[0]
+        })
         fReader.readAsDataURL(e.target.files[0]);
         fReader.onloadend = function(event){
-            setNFT({
+            SeteditImg({
                 ...nft,
-                detailImg:event.target.result
+                detailImageFile:event.target.result
             })
         }
         
-    }
-    const handleNFTname=(e)=>{
-        setNFT({
-            ...nft,
-            name:e.target.value
-        })
     }
     const handleNFTtitle=(e)=>{
         setNFT({
@@ -94,6 +122,9 @@ export default function NFTItem(props) {
             ...nft,
             sport:e.target.value
         })
+    }
+    const handleNFTplayer=(e)=>{
+        setPlayer(e.target.value)
     }
     const handleNFTdescribe=(e)=>{
         setNFT({
@@ -110,13 +141,14 @@ export default function NFTItem(props) {
     const handleNFTcount=(e)=>{
         setNFT({
             ...nft,
-            count:e.target.value
+            remainedCount:e.target.value
         })
     }
     const handleStartdate=(e)=>{
+        let time = (e.target.value).split('T').join(' ')+':00'
         setNFT({
             ...nft,
-            startDateTime:e.target.value
+            startDateTime:time
         })
     }
     const handleExhibition=(e)=>{
@@ -130,7 +162,7 @@ export default function NFTItem(props) {
         <Paper className={classes.item} onClick={handleClick}>
             <div className={classes.data}>
                 <img src={nft.nftImageUrl} alt="nftImageUrl" className={classes.img}></img>
-                {nft.title} &nbsp;&nbsp;|&nbsp;&nbsp; {name}
+                {nft.title} &nbsp;&nbsp;|&nbsp;&nbsp; {nft.teamPlayerInfo.name}
             </div>
         </Paper>
 
@@ -141,7 +173,7 @@ export default function NFTItem(props) {
                 handleUpdate={handleUpdate}
                 handleNFTimg={handleNFTimg}
                 handleDetailimg={handleDetailimg}
-                handleNFTname={handleNFTname}
+                handleNFTplayer={handleNFTplayer}
                 handleNFTtitle={handleNFTtitle}
                 handleNFTsport={handleNFTsport}
                 handleNFTdescribe={handleNFTdescribe}
@@ -150,8 +182,9 @@ export default function NFTItem(props) {
                 handleStartdate={handleStartdate}
                 handleExhibition={handleExhibition}
                 edit={nftedit}
+                editImg={editImg}
+                SeteditImg={SeteditImg}
                 nft={nft}
-                name={name}
         ></NFTViewModal>
         </div>
     )

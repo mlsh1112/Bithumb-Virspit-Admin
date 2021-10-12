@@ -58,9 +58,11 @@ export default function SportsPage() {
     React.useEffect(()=>{
       setSports([])
       getsportByPage({page:page,size:SIZE})
-      .then(res=>setSports(res.data.data))
-      .catch(err=>console.log(err))
+        .then(res=>setSports(res.data.data))
+        .catch(err=>console.log(err.response))
+      
     },[page])
+
 
     const handleOpen = () => {
       setOpen(true);
@@ -102,7 +104,6 @@ export default function SportsPage() {
   }
   const handleSearch = (e) =>{
     e.preventDefault()
-    
     setSports([])
     setPage(1)
     getsportByname(searchKeyword)
@@ -110,6 +111,7 @@ export default function SportsPage() {
       setTotal(res.data.data.length)
       setSports(res.data.data)
     })
+    .catch(err=>console.log(err.response))
     
   }
   const handlePaging=(e)=>{

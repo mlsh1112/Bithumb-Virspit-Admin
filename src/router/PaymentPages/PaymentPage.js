@@ -25,9 +25,9 @@ export default function PaymentPage() {
         .catch(err=>console.log(err))
     },[page])
     
-
-    const handleNFTsubmit = (e) =>{
+    const handleSubmit = (e) =>{
         e.preventDefault()
+        setPage(1)
         const searchStartDate = String(date[0].getFullYear())+'-'+String(date[0].getMonth()+1).padStart(2,'0')+'-'+String(date[0].getDate()).padStart(2,'0')
         const searchEndDate = String(date[1].getFullYear())+'-'+String(date[1].getMonth()+1).padStart(2,'0')+'-'+String(date[1].getDate()).padStart(2,'0')
         
@@ -36,9 +36,11 @@ export default function PaymentPage() {
             endDate:searchEndDate
         }
 
-        setPayment([])
         getorderByDate(searchData)
-        .then(res=>setPayment(res.data))
+        .then(res=>{
+            setTotal(res.data.data.length)
+            setPayment(res.data.data)
+        })
         .catch(err=>console.log(err))
 
     }
@@ -55,6 +57,7 @@ export default function PaymentPage() {
             <PaymentSearchPage
                 date={date}
                 handleSearchDate={handleSearchDate}
+                handleSubmit={handleSubmit}
             ></PaymentSearchPage>
             <PaymentList
                 payment={payment}

@@ -4,6 +4,10 @@ import SportModal from './SportModal';
 import { editsport,deletesport } from '../../api/API';
 export default function SportsItem(props) {
     const [sport,setSport] = useState(props.sport)
+    const [editedSport,setEditsport] = useState({
+        name:props.sport.name,
+        iconUrl:""
+    })
     const [open, setOpen] = React.useState(false)
     const handleDelete = () =>{
         deletesport(sport.id)
@@ -11,23 +15,29 @@ export default function SportsItem(props) {
             alert("DELETE SUCCESS - SPORT")
             window.location.replace("/home")
         })
-        .catch(err=>console.log(err))
+        .catch(err=>alert(err.response.data.message))
     }
     const handleOpen = () =>{
         setOpen(true)
     }
     const handleEdit = () =>{
-    console.log(sport)
+    console.log(editedSport)
         const form = new FormData();
-        form.append("name", sport.name);
-        form.append("iconFile", sport.iconUrl);
+        
+        form.append("name", editedSport.name);
+        if(editedSport.iconUrl)
+            form.append("iconFile", editedSport.iconUrl);
         form.append("id", sport.id);
 
         editsport(sport.id,form)
-        .then(res=>{alert("UPDATE SUCCESS")
-        window.location.replace("/home")
+        .then(res=>{
+            alert("UPDATE SUCCESS")
+            window.location.replace("/home")
         })
-        .catch(err=>console.log(err))
+        .catch(err=>{
+            alert(err.response.data.message)
+            window.location.replace("/home")
+        })
 
         setOpen(false)
     }
@@ -35,16 +45,16 @@ export default function SportsItem(props) {
         setOpen(false);
     }
     const handleImage = (e) =>{
-        setSport({
-            ...sport,
+        setEditsport({
+            ...editedSport,
             iconUrl:e.target.files[0]
         })
         
     }
 
     const handleChange = (e) => {
-        setSport({
-            ...sport,
+        setEditsport({
+            ...editedSport,
             name:e.target.value
         })
     };

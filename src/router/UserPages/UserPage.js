@@ -56,12 +56,12 @@ export default function UserPage() {
 
     const dispatch = useDispatch()
 
-
     useEffect(()=>{
         dispatch(callSports).payload.then(res=>{
           setSports(res.data)
         })
-        dispatch(callPlayers).payload.then(res=>setTotal(res.data.length))
+        dispatch(callPlayers).payload.then(res=>{
+            setTotal(((res.data.length)/5+1)*5)})
         
         isSearch=false
     },[])
@@ -69,7 +69,9 @@ export default function UserPage() {
     useEffect(()=>{
         setSearch([])
         getplayersBypage({page:page,size:5})
-        .then(res=>setSearch(res.data.data))
+        .then(res=>{
+            console.log(res.data.data)
+            setSearch(res.data.data)})
         .catch(err=>console.log(err))
     },[page])
 

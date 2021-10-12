@@ -19,15 +19,14 @@ export default function PaymentList(props) {
                     <TableCell/>
                     <TableCell>주문자</TableCell>
                     <TableCell >NFT</TableCell>
-                    {/* <TableCell >주문번호</TableCell> */}
                     <TableCell >주문일자</TableCell>
                     <TableCell >메모</TableCell>
                 </TableRow>
                 </TableHead>
                 <TableBody>
-                {props.payment.map((payment,i) => (
-                    <PaymentItem key={i} payment={payment} />
-                ))}
+                    {props.payment.map((payment,i) => (
+                            <PaymentItem key={i} payment={payment} />
+                    ))}
                 </TableBody>
             </Table>
         </TableContainer>

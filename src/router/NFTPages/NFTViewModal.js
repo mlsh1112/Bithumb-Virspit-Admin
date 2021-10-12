@@ -34,7 +34,7 @@ function getModalStyle() {
         marginBottom:"40px"
     },
     img:{
-        width:100,
+        width:150,
         marginRight:"20px"
     },
     submitBtn:{
@@ -91,15 +91,11 @@ export default function NFTViewModal(props) {
             <div className={classes.info}>
                 <div>
                     NFT Image<br/>
-                    <form>
-                        <input accept="image/*" className={classes.imginput} id="icon-button-file" type="file" name="nft" onChange={props.handleNFTimg} />
-                        
-                    </form>
+                    <img src={nft.nftImageUrl} alt="nftImageUrl" className={classes.img}></img><br/>
                     <br/>
                     Detail Image<br/>
                     <form>
                         <input accept="image/*" className={classes.imginput} id="icon-button-file" type="file" name="detail" onChange={props.handleDetailimg} />
-                        
                     </form>
                 </div>
                 <form noValidate autoComplete="off">

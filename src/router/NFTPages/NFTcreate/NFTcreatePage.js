@@ -121,7 +121,7 @@ export default function NFTCreatePage({history}) {
     const handleNFTcount=(e)=>{
         setNFT({
             ...nft,
-            count:e.target.value
+            remainedCount:parseInt(e.target.value)
         })
     }
     const handleStartdate=(e)=>{
@@ -139,6 +139,7 @@ export default function NFTCreatePage({history}) {
     }
     const handleSubmit =()=>{
         console.log(nft)
+        console.log(nft.remainedCount)
         
         const form = new FormData();
         form.append('description', nft.description);
@@ -156,7 +157,7 @@ export default function NFTCreatePage({history}) {
             alert("UPLOAD SUCCESS")
             history.goBack()
         })
-        .catch(err=>console.log(err))
+        .catch(err=>console.log(err.response))
 
 
     }

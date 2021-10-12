@@ -22,7 +22,7 @@ export default function UserItem(props) {
             alert("DELETE SUCCESS - PLAYER OR TEAM")
             window.location.replace("/home/user")
         })
-        .catch(err=>console.log(err))
+        .catch(err=>alert(err.response.data.message))
     }
     const handleOpen = () =>{
         setOpen(true)

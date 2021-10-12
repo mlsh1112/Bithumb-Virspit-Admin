@@ -19,7 +19,7 @@ const API = axios.create(headers);
 export const getproducts = () => API.get(PORT+'/products')
 export const getproductsByPage = ({page,size}) => API.get(PORT+`/products?page=${page}&size=${size}`)
 export const getproductById = (id) => API.get(PORT+`/products/${id}`)
-export const getproductSearch = ({sportsId,teamPlayerId,title}) => API.get(PORT+`/products?title=${title}&sportsId=${sportsId}&teamPlayerId=${teamPlayerId}`)
+export const getproductSearch = ({sportsId,teamPlayerId,title,page,size}) => API.get(PORT+`/products?title=${title}&sportsId=${sportsId}&teamPlayerId=${teamPlayerId}&page=${page}&size=${size}`)
 export const uploadproducts = (param) => API.post(PORT+'/products',param)
 export const editproducts = (id,param) => API.put(PORT+`/products/${id}`,param)
 
@@ -42,7 +42,7 @@ export const editsport = (id,param) => API.put(PORT+`/sports/${id}`,param)
 export const updatesport = (param) => API.post(PORT+'/sports',param)
 export const deletesport = (id) => API.delete(PORT+`/sports/${id}`)
 
-export const authcheck = () => API.get(PORT+'/auth/check')
+export const authcheck = (param) => API.get(PORT+'/auth/signin',param)
 
 export const getorder = () => API.get(PORT+'/orders')
 export const getorderByPage = ({page,size}) => API.get(PORT+`/orders?page=${page}&size=${size}`)

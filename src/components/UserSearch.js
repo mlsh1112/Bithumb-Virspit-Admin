@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserSearch(props) {
     const classes = useStyles()
-    const [players,setPlayers] = React.useState([])
     const sport = props.sport || ""
 
     return (

@@ -37,6 +37,7 @@ const style = {
 
   
 
+
 export default function AdvertisementAddModal(props){
     const classes = useStyles()
     const [ProductsData, SetProductsData] = useState(props.ProductsData);
@@ -45,12 +46,9 @@ export default function AdvertisementAddModal(props){
         return (
             <div>
                 <Box sx={style}>
-
                     <Typography id="modal-modal-title" variant="h6" style={{fontWeight:'bold'}}>
                         현재 광고 등록 
-                    </Typography>
-
-                            
+                    </Typography>         
                         <Typography>
                             <ul style={{fontWeight:'bold'}}>
                             <li style={{marginTop : '40px'}}> 종목 </li>
@@ -71,6 +69,7 @@ export default function AdvertisementAddModal(props){
                                 placeholder='광고 설명'
                                 onChange={props.handleChange}
                                 value={ProductsData.description}
+
                             >
                             </TextField>
 

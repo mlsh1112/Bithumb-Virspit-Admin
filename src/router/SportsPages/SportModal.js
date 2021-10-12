@@ -4,7 +4,7 @@ import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
 
 import { mainColor } from '../../assets/colors';
-import SubmitBtn from '../../components/SubmitBtn';
+import {SubmitBtn} from '../../components/SubmitBtn';
 
 
 function getModalStyle() {
@@ -36,17 +36,27 @@ const useStyles = makeStyles((theme) => ({
    modalBtn:{
     marginTop:"10vh",
     margin:"30px"
+   },
+   iconUrl:{
+     width:"100px",
+     marginBottom:"20px"
    }
 }));
 
 export default function SportModal(props) {
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
-  const {name} = props.sport
-
+  const {name,iconUrl} = props.sport
   const modalbody = (
     <div style={modalStyle} className={classes.paper}>
         <div className={classes.modalContent}>
+          {
+            props.modalKind==="upload"?
+            <></>
+            :
+            <img src={iconUrl} alt="icon"  className={classes.iconUrl}/>
+            
+          }
             <form noValidate autoComplete="off" >
                 <TextField 
                   label="종목 이름" 
@@ -55,9 +65,10 @@ export default function SportModal(props) {
             </form>
         </div>
             
-        <div className={classes.modalContent}>
-            <input accept="image/*" className={classes.input} id="icon-button-file" type="file" />
-        </div>
+      
+        <form className={classes.modalContent}>
+            <input accept="image/*" className={classes.input} type="file" onChange={props.handleImage} />
+        </form>
 
         <div className={classes.modalBtn}>
           {

@@ -1,12 +1,13 @@
 import React from 'react'
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-import UserSearch from '../../components/UserSearch';
 import TextField from '@material-ui/core/TextField';
 import DateRangePicker from '@mui/lab/DateRangePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import Box from '@mui/material/Box';
+import {SubmitSmallBtn} from '../../components/SubmitBtn'
+
 
 const useStyles = makeStyles((theme) => ({
     search: {
@@ -14,42 +15,15 @@ const useStyles = makeStyles((theme) => ({
         marginBottom:"20px",
         padding:"30px"
       },
-      list: {
-        marginRight: theme.spacing(3),
-        padding:"30px"
-      },
-      nftsearch:{
-          width:"120vh",
-          marginTop:"30px"
-      },
       datesearch:{
-
-        marginBottom:"30px"
+        marginBottom:"10px",
+        display:"float"
       }
   }));
-export default function PaymentSearchPage() {
+
+export default function PaymentSearchPage(props) {
     const classes = useStyles()
-    const [searchuser, setSearchUser] = React.useState("");
-    const [selectsport, setSelectSport] = React.useState('');
-    const [searchNFT, setSearchNFT] = React.useState('')
-    const [date, setDate] = React.useState([null, null]);
-    const handleSelectSportChange = (event) => {
-        setSelectSport(event.target.value);
-    };
-    const handleSearchUser = (e) =>{
-        setSearchUser(e.target.value)
-    }
-    const handleUserSearchSubmit =(e)=>{
-        console.log(searchuser,selectsport)
-        e.preventDefault()
-    }
-    const handleNFTsubmit = (e) =>{
-        e.preventDefault()
-        console.log(searchuser,selectsport,searchNFT)
-    }
-    const handleNFTsearch = (e) =>{
-        setSearchNFT(e.target.value)
-    }
+
     return (
         <div>
             <Paper className={classes.search}>
@@ -58,10 +32,8 @@ export default function PaymentSearchPage() {
                         <DateRangePicker
                             startText="결제 날짜 (start)"
                             endText="결제 날짜 (end)"
-                            value={date}
-                            onChange={(newValue) => {
-                            setDate(newValue);
-                            }}
+                            value={props.date}
+                            onChange={props.handleSearchDate}
                             renderInput={(startProps, endProps) => (
                             <React.Fragment>
                                 <TextField {...startProps} />
@@ -70,19 +42,11 @@ export default function PaymentSearchPage() {
                             </React.Fragment>
                             )}
                         />
+                        
                         </LocalizationProvider>
+
+                        <SubmitSmallBtn value={"search"} onChange={props.handleSubmit}></SubmitSmallBtn>
                     </div>
-                <UserSearch 
-                    handleSelectSportChange={handleSelectSportChange} 
-                    handleSearchUser={handleSearchUser}
-                    handleUserSearchSubmit={handleUserSearchSubmit}
-                    sport={selectsport}></UserSearch>
-                <form noValidate autoComplete="off" onSubmit={handleNFTsubmit} >
-                    <TextField 
-                    label="NFT 명"
-                    onChange={handleNFTsearch}
-                    className={classes.nftsearch}/>
-                </form>
                 </Paper>
         </div>
     )

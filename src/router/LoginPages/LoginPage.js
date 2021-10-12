@@ -13,6 +13,8 @@ import {mainColor} from '../../assets/colors'
 
 import {useDispatch} from 'react-redux'
 import {loginUser} from '../../_actions/user_action'
+
+import {authcheck} from '../../api/API'
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -72,6 +74,10 @@ export default function LoginPage({history}) {
     //history.push("/home")
     
 
+    authcheck()
+    .then(res=>console.log(res))
+    .catch(err=>console.log(err))
+    
     const type = dispatch(loginUser(body)).payload.type
 
     if(type==='admin') history.push('/home')

@@ -1,10 +1,10 @@
+
 import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { Select, MenuItem } from '@material-ui/core';
 import SubmitBtn from '../../components/SubmitBtn';
-
 
 const useStyles = makeStyles((theme) => ({
     label:{
@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
         padding: '120px 0px',
         marginTop : '30px'
     },
+
     input:{
         width : '430px',
     },
@@ -43,6 +44,7 @@ export default function AdvertisementEditModal(props){
     const {description, url} = props.AdsData
     const [ProductsData, SetProductsData] = useState(props.ProductsData);
 
+
         return (
             <div>
                 <Box sx={style}>
@@ -68,6 +70,7 @@ export default function AdvertisementEditModal(props){
 
                                 <li style={{marginTop : '20px'}}> URL </li>
                                 <TextField className={classes.input} defaultValue={url} margin="dense" ></TextField>
+
 
                                 </ul>
                                 <div style={{textAlign : 'center', marginTop : '50px'}}>

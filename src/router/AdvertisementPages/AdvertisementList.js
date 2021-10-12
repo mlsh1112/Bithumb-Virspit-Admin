@@ -1,3 +1,4 @@
+
 import React, {useState, useEffect} from 'react'
 import AdsItem from './AdvertisementItem';
 import { getads } from '../../api/API';

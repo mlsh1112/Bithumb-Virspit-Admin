@@ -1,12 +1,14 @@
-import React from 'react'
+import React,{useState} from 'react'
 import Button from '@material-ui/core/Button'
 import { mainColor } from '../../assets/colors'
 import UserModal from './UserModal'
+import { editplayer ,deleteplayer} from '../../api/API'
 
 export default function UserItem(props) {
-    const [user,setUser] = React.useState(props.user)
-    const [open,setOpen] = React.useState(false)
-    
+    const initalUser = props.user
+    const [user,setUser] = useState(props.user)
+    const [open,setOpen] = useState(false)
+
     const handleRadioChange = (e) => {
         e.preventDefault()
         setUser({
@@ -15,19 +17,41 @@ export default function UserItem(props) {
         })
     };
     const handleDelete = () =>{
-
+        deleteplayer(user.id)
+        .then(res=>{
+            alert("DELETE SUCCESS - PLAYER OR TEAM")
+            window.location.replace("/home/user")
+        })
+        .catch(err=>console.log(err))
     }
     const handleOpen = () =>{
         setOpen(true)
     }
 
     const handleClose = () => {
+        setUser(initalUser)
         setOpen(false)
     }
 
     const handleEdit=(e)=>{
         e.preventDefault()
-        console.log(user)
+        const data = {
+            id : user.id,
+            name: user.name,
+            description: user.description,
+            type: user.type,
+            revenueShareRate: user.revenueShareRate,
+            sportsId:  user.sportsId
+        }
+        console.log(data)
+
+        editplayer((data))
+        .then(res=>{
+            alert("UPDATE SUCCESS - PLAYER OR TEAM")
+            window.location.replace("/home/user")
+        })
+        .catch(err=>console.log(err))
+
         setOpen(false)
     }
     const handleNameChange=(e)=>{
@@ -41,21 +65,21 @@ export default function UserItem(props) {
         e.preventDefault()
         setUser({
             ...user,
-            sport:e.target.value
+            sportsId:e.target.value
         })
     }
     const handleDescriptionChange=(e)=>{
-        e.preventDefault()
+        //e.preventDefault()
         setUser({
             ...user,
-            describe:e.target.value
+            description:e.target.value
         })
     }
 
     const handleSliderChange = (e, newValue) => {
         setUser({
             ...user,
-            revenue:newValue
+            revenueShareRate:newValue
         })
     };
 
@@ -63,12 +87,12 @@ export default function UserItem(props) {
         if(event.target.name==='virspit')
             setUser({
                 ...user,
-                revenue:event.target.value === '' ? '' : Number(event.target.value)
+                revenueShareRate:event.target.value === '' ? '' : Number(event.target.value)
             })
          else
             setUser({
                 ...user,
-                revenue:event.target.value === '' ? '' : Number(100 - event.target.value)
+                revenueShareRate:event.target.value === '' ? '' : Number(100 - event.target.value)
             })
         
 
@@ -85,7 +109,7 @@ export default function UserItem(props) {
 
     const userTypeLable = (
         <div style={labelstyle}>
-                {user.type==='player'?<>Player</>:<>Team</>}
+                {user.type==='PLAYER'?<>Player</>:<>Team</>}
         </div>
     ) 
     
@@ -102,6 +126,7 @@ export default function UserItem(props) {
                     <Button color="secondary" onClick={handleDelete}>Delete</Button>
                     <UserModal
                         openModal={open}
+                        sports = {props.sports}
                         handleClose={handleClose}
                         handleEdit={handleEdit}
                         handleNameChange={handleNameChange}

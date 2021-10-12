@@ -1,10 +1,10 @@
+
 import React, {useState, useEffect} from 'react'
 
 import { Paper } from '@mui/material';
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles';
 import { Modal } from '@material-ui/core';
-
 import AdsEdit from './AdvertisementEditModal';
 import { getads, editads, deleteads, getproductsByPage } from '../../api/API';
 
@@ -80,6 +80,7 @@ function AdvertisementItem(props) {
          .catch(err => console.log(err))
 
         
+
     };
 
     const handleEdit = () => {
@@ -113,7 +114,6 @@ function AdvertisementItem(props) {
 
                     {/* 광고 */}
                     <div className={classes.data} >
-
                     <div className={classes.text_display}>
                             {AdsData.description}
                         <div className={classes.url_div}>

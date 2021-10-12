@@ -36,6 +36,7 @@ const useStyles = makeStyles(() => ({
         
     },
 
+
     searchBar : {
         width: '90%',
         margin:'30px 0 50px 20px'
@@ -102,8 +103,6 @@ export default function AdvertisementPage() {
             <Paper className={classes.searchPaper}>
                 <TextField className={classes.searchBar} label="검색" variant="standard" ></TextField>
             </Paper>
-
-
             <Paper className={classes.paper}>
                 <div>
                     <span className={classes.title}>현재 광고 조회 </span>
@@ -125,6 +124,7 @@ export default function AdvertisementPage() {
                             onCreate={onCreate}
                             ProductsData={ProductsData}
                             // onChange={onChange}
+
                         ></AdAddModal>
                     </Modal>
 

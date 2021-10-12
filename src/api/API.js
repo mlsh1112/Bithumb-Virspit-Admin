@@ -48,7 +48,6 @@ export const getorder = () => API.get(PORT+'/orders')
 export const getorderByPage = ({page,size}) => API.get(PORT+`/orders?page=${page}&size=${size}`)
 export const editordermemo = ({memo,orderId}) => API.put(PORT+'/orders/memo',{memo,orderId})
 export const getorderByDate=({startDate,endDate}) => API.get(PORT+`/orders?startDate=${startDate}&endDate=${endDate}`)
-export const getorderByDate=({startDate,endDate}) => API.get(PORT+`/orders?startDate=${startDate}&endDate=${endDate}`)
 
 
 export const getads = () => API.get(PORT+'/advertisements?page=1&size=100')

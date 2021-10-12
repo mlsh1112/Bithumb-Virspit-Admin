@@ -12,9 +12,11 @@ const useStyles = makeStyles((theme) => ({
     smallBtn:{
         backgroundColor:mainColor,
         color:"white",
-        width:"50px",
+        width:"100px",
         fontSize:10,
         fontWeight:"bold",
+        float:"right",
+        marginRight:"50px"
     }
   }));
 export function SubmitBtn({value,onClick}) {

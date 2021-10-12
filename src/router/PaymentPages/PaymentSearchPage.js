@@ -45,7 +45,7 @@ export default function PaymentSearchPage(props) {
                         
                         </LocalizationProvider>
 
-                        <SubmitSmallBtn value={"search"} onChange={props.handleSubmit}></SubmitSmallBtn>
+                        <SubmitSmallBtn value={"search"} onClick={props.handleSubmit}></SubmitSmallBtn>
                     </div>
                 </Paper>
         </div>

@@ -87,7 +87,7 @@ export default function UserModal(props) {
             <div className={classes.modalContent}>
             <form>
                 <FormControl component="fieldset" error={props.error} className={classes.selectTyep}>
-                    <RadioGroup aria-label="quiz" name="quiz" value={props.type} onChange={props.handleRadioChange}>
+                    <RadioGroup aria-label="quiz" name="quiz" value={props.type} onChange={props.handleRadioChange} defaultValue={user.type}>
                     <FormControlLabel value="TEAM" control={<Radio />} label="Team" />
                     <FormControlLabel value="PLAYER" control={<Radio />} label="Player" />
                     </RadioGroup>
@@ -107,7 +107,7 @@ export default function UserModal(props) {
                     onClose={handleClose}
                     onOpen={handleOpen}
                     value={user.sport}
-                    defaultValue={user.sport}
+                    defaultValue={user.sportsId}
                     onChange={props.handleSportChange}
                 >
                   {

@@ -61,12 +61,33 @@ export default function NFTPage({history}) {
 
     React.useEffect(()=>{
         setresultNFT([])
-        getproductsByPage({page:page,size:3})
-        .then(res=>{
-            setresultNFT(res.data.data.list)
-        })
-
+        if(isSearch){
+            getproductSearch({sportsId:String(selectsport),teamPlayerId:searchplayer,title:searchNFT,page:page,size:3})
+            .then(res=>{
+                console.log(res.data.data.list,isSearch)
+                setresultNFT(res.data.data.list)
+            })
+            .catch(err=>console.log(err)) 
+        }
+        else{
+            getproductsByPage({page:page,size:3})
+            .then(res=>{
+                setresultNFT(res.data.data.list)
+            })
+        }
     },[page])
+
+    React.useEffect(()=>{
+        setresultNFT([])
+        if(isSearch){
+            getproductSearch({sportsId:String(selectsport),teamPlayerId:searchplayer,title:searchNFT,page:page,size:3})
+            .then(res=>{
+                console.log(res.data.data.list,isSearch)
+                setresultNFT(res.data.data.list)
+            })
+            .catch(err=>console.log(err)) 
+        }
+    },[isSearch])
     const handleSelectSportChange = (e) => {
         isSearch=false
         setSelectSport(e.target.value);
@@ -94,11 +115,12 @@ export default function NFTPage({history}) {
     const handleNFTsubmit = (e) =>{
         isSearch=true
         e.preventDefault()
+        setresultNFT([])
+        setPage(1)
         getproductSearch({sportsId:String(selectsport),teamPlayerId:searchplayer,title:searchNFT})
         .then(res=>{
-            console.log(res.data.data.list,isSearch)
-            setresultNFT([])
-            setresultNFT(res.data.data.list)})
+            setTotal(res.data.data.list.length)
+        })
         .catch(err=>console.log(err))
     }
     const handleNFTsearch = (e) =>{

@@ -1,17 +1,18 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+
 import { mainColor } from '../../assets/colors'
 import { makeStyles } from '@material-ui/core/styles';
-
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-
 import AdAddModal from './AdvertisementAddModal';
 import AdsList from './AdvertisementList';
-import { Modal} from '@mui/material';
+import { Modal } from '@material-ui/core';
+import { TextField } from '@mui/material';
 
+import { addads, getproductsByPage } from '../../api/API';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     paper: {
         padding : '30px',
         display: 'flex',
@@ -35,29 +36,73 @@ const useStyles = makeStyles((theme) => ({
         
     },
 
+
+    searchBar : {
+        width: '90%',
+        margin:'30px 0 50px 20px'
+    },
+
+    searchPaper : {
+        padding : '20px 0 40px 30px',
+        marginBottom : '20px'
+    }
+
 }));
 
 
 
-
-
-
-export default function AdvertisementPage(props) {
+export default function AdvertisementPage() {
     const classes = useStyles()
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
+    
+    const data = {
+        description : '',
+        productsId : '',
+        url : ''
+    }
+    const [AdsData, setAdsData] = useState(data);
+    const [ProductsData, setProductsData] = useState([]);
+    
+    
     const onCreate = () => {
         setOpen(false);
-        console.log('Ads Create success')
+
+        const form = new FormData();
+        form.append('description', AdsData.description);
+        form.append('productsId', AdsData.productsId);
+        form.append('url', AdsData.url);
+
+        addads(form)
+         .then(res => {
+            window.location.replace('/home/advertisement')
+            alert('ADD SUCCESS - Advertisement')
+            console.log('Ads Create success')
+         })
+         .catch(err => console.log(err))
+        
+         setAdsData(data);
     }
-    
+
+    useEffect(() => {
+        getproductsByPage({page:1, size:100})
+         .then(res => setProductsData(res.data.data.list))
+         .catch(err => console.log(err))
+    }, [])
+
+    const handleChange = (e) => {
+      
+    }
+
 
 
 
     return (
         <div>
+            <Paper className={classes.searchPaper}>
+                <TextField className={classes.searchBar} label="검색" variant="standard" ></TextField>
+            </Paper>
             <Paper className={classes.paper}>
                 <div>
                     <span className={classes.title}>현재 광고 조회 </span>
@@ -67,7 +112,6 @@ export default function AdvertisementPage(props) {
                     </IconButton>
                     </span>
         
-
                     <AdsList ></AdsList>
                     
                     <Modal
@@ -78,10 +122,9 @@ export default function AdvertisementPage(props) {
 
                         <AdAddModal
                             onCreate={onCreate}
+                            ProductsData={ProductsData}
                             // onChange={onChange}
-                            // img={img}
-                            // text={text}
-                            // url={url}
+
                         ></AdAddModal>
                     </Modal>
 

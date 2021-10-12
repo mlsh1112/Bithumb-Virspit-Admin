@@ -1,9 +1,10 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 
+import React, {useState} from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import {SubmitBtn} from '../../components/SubmitBtn';
+import { Select, MenuItem } from '@material-ui/core';
+import SubmitBtn from '../../components/SubmitBtn';
 
 const useStyles = makeStyles((theme) => ({
     label:{
@@ -14,9 +15,12 @@ const useStyles = makeStyles((theme) => ({
         marginTop : '30px'
     },
 
-
     input:{
         width : '430px',
+    },
+    select:{
+        width : '100%',
+        marginTop : '10px'
     }
 }));
 
@@ -37,33 +41,36 @@ const style = {
 
 export default function AdvertisementEditModal(props){
     const classes = useStyles()
+    const {description, url} = props.AdsData
+    const [ProductsData, SetProductsData] = useState(props.ProductsData);
+
 
         return (
             <div>
                 <Box sx={style}>
 
-
                     <Typography id="modal-modal-title" variant="h6" style={{fontWeight:'bold'}}>
                         현재 광고 수정
                     </Typography>
-
-                        <div style={{textAlign:'center', padding:'30px 0 0 15%'}}>
-                                <input 
-                                        type='file'
-                                        id='upload'
-                                        accept='image/*'
-                                        name='UploadImage'
-                                />
-                        </div>
                             
                             <Typography>
                                 <ul style={{fontWeight:'bold'}}>
+                                <li style={{marginTop : '40px'}}> 종목 </li>
+                                <Select className={classes.select} displayEmpty>
+                                {ProductsData.map((products, i) => (
+                                    <MenuItem key={i} value={products.id}>
+                                        {products.title}
+                                    </MenuItem>
+                                ))
+                                }
+                                </Select>
 
                                 <li style={{marginTop : '40px'}}> 설명 </li>
-                                <TextField className={classes.input} margin="dense" ></TextField>
+                                <TextField className={classes.input} defaultValue={description} margin="dense" ></TextField>
 
                                 <li style={{marginTop : '20px'}}> URL </li>
-                                <TextField className={classes.input} margin="dense" ></TextField>
+                                <TextField className={classes.input} defaultValue={url} margin="dense" ></TextField>
+
 
                                 </ul>
                                 <div style={{textAlign : 'center', marginTop : '50px'}}>

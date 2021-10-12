@@ -1,9 +1,10 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-
 import { TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import {SubmitBtn} from '../../components/SubmitBtn';
+import SubmitBtn from '../../components/SubmitBtn';
+import { Select, MenuItem, Menu } from '@material-ui/core';
+
 
 const useStyles = makeStyles((theme) => ({
     label:{
@@ -15,6 +16,10 @@ const useStyles = makeStyles((theme) => ({
     },
     input:{
         width : '430px',
+    },
+    select:{
+        width : '100%',
+        marginTop : '10px'
     }
 }));
 
@@ -32,43 +37,39 @@ const style = {
 
   
 
-//{img, text, url, onDataChange, onCreate}
+
 export default function AdvertisementAddModal(props){
     const classes = useStyles()
+    const [ProductsData, SetProductsData] = useState(props.ProductsData);
+    
 
         return (
             <div>
                 <Box sx={style}>
-
-
                     <Typography id="modal-modal-title" variant="h6" style={{fontWeight:'bold'}}>
                         현재 광고 등록 
-                    </Typography>
-
-                    <form autoComplete="off" noValidate>
-                        <div style={{textAlign:'center', padding:'30px 0 0 15%'}}>
-                            <input 
-                                type='file'
-                                id='upload'
-                                accept='image/*'
-                                name='UploadImage'
-                                value={props.img}
-                            />
-                                
-                        </div>
-                            
+                    </Typography>         
                         <Typography>
-                                
                             <ul style={{fontWeight:'bold'}}>
+                            <li style={{marginTop : '40px'}}> 종목 </li>
+                            <Select className={classes.select}>
+                                {ProductsData.map((products, i) => (
+                                    <MenuItem key={i} value={products.id}>
+                                        {products.title}
+                                    </MenuItem>
+                                ))
+                                }
+                            </Select>
 
-                            <li style={{marginTop : '40px'}}> 설명 </li>
+                            <li style={{marginTop : '20px'}}> 설명 </li>
                             <TextField 
                                 className={classes.input} 
                                 margin="dense" 
                                 name='text' 
                                 placeholder='광고 설명'
-                                onChange={props.onChange}
-                                value={props.text}
+                                onChange={props.handleChange}
+                                value={ProductsData.description}
+
                             >
                             </TextField>
 
@@ -78,8 +79,8 @@ export default function AdvertisementAddModal(props){
                                 margin="dense"
                                 name='url'
                                 placeholder='광고 URL'
-                                onChange={props.onChange}
-                                value={props.url}
+                                onChange={props.handleChange}
+                                value={ProductsData.url}
                             >
                             </TextField>
                             </ul>
@@ -95,7 +96,6 @@ export default function AdvertisementAddModal(props){
 
                         </Typography>
                             
-                    </form>
                 </Box>
             </div>
         )

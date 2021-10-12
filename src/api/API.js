@@ -8,6 +8,9 @@ const PORT = baseurl.port
 const headers = {
     headers: {
       Authorization: adminToken,
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
     }
 }
 
@@ -45,3 +48,11 @@ export const getorder = () => API.get(PORT+'/orders')
 export const getorderByPage = ({page,size}) => API.get(PORT+`/orders?page=${page}&size=${size}`)
 export const editordermemo = ({memo,orderId}) => API.put(PORT+'/orders/memo',{memo,orderId})
 export const getorderByDate=({startDate,endDate}) => API.get(PORT+`/orders?startDate=${startDate}&endDate=${endDate}`)
+export const getorderByDate=({startDate,endDate}) => API.get(PORT+`/orders?startDate=${startDate}&endDate=${endDate}`)
+
+
+export const getads = () => API.get(PORT+'/advertisements?page=1&size=100')
+export const getadsID = (id) => API.get(PORT+`/advertisements/${id}`)
+export const addads = (description, productId, url) => API.post(PORT+'/advertisements', {description, productId, url})
+export const editads = (id, description, url) => API.put(PORT+`/advertisements/${id}`, {description, url})
+export const deleteads = (id) => API.delete(PORT+`/advertisements/${id}`)

@@ -1,9 +1,10 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-import SubmitBtn from '../../components/SubmitBtn';
+import {SubmitBtn} from '../../components/SubmitBtn';
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
+
 
 function getModalStyle() {
     const top = 50;
@@ -33,7 +34,7 @@ function getModalStyle() {
         marginBottom:"40px"
     },
     img:{
-        width:300,
+        width:150,
         marginRight:"20px"
     },
     submitBtn:{
@@ -45,33 +46,35 @@ export default function NFTViewModal(props) {
     const classes = useStyles();
     const [modalStyle] = React.useState(getModalStyle);
     const nft = props.nft
+    const teamPlayerInfo = props.nft.teamPlayerInfo
+    const sportsInfo = props.nft.sportsInfo
 
     const modalbody=(
         <div style={modalStyle} className={classes.paper}>
             <div className={classes.info}>
                 <div>
                     NFT Image<br/>
-                    <img src={nft.nftimg} alt="nftimg" className={classes.img}></img><br/>
+                    <img src={nft.nftImageUrl} alt="nftImageUrl" className={classes.img}></img><br/>
                     Detail Image<br/>
-                    <img src={nft.detailImg} alt="nftimg" className={classes.img}></img>
+                    <img src={nft.detailImageUrl} alt="detailImageUrl" className={classes.img}></img>
                 </div>
                 <ul>
                     <p>
                         <li>Title : {nft.title} </li>
-                        <li>Name : {nft.name}</li>
-                        <li>Sport : {nft.sport}</li>
-                        <li>Describtion : {nft.describtion}</li>
+                        <li>Name : {teamPlayerInfo.name}</li>
+                        <li>Sport : {sportsInfo.name}</li>
+                        <li>Describtion : {nft.description}</li>
                     </p>
 
                     <p>
                         <li>Price : {nft.price} </li>
-                        <li>Count : {nft.count}</li>
-                        <li>StartDate : {nft.startDate}</li>
+                        <li>Count : {nft.remainedCount}</li>
+                        <li>StartDate : {nft.startDateTime}</li>
                     </p>
 
                     <p>
                         <li>Exhibition : {nft.exhibition?'Y':'N'} </li>
-                        <li>Sold out : {nft.soldout?'Y':'N'}</li>
+                        <li>Sold out : {nft.remainedCount<=0?'Y':'N'}</li>
                     </p>
                 </ul>
             </div>
@@ -82,24 +85,17 @@ export default function NFTViewModal(props) {
         </div>
     )
 
+    const editTime = (nft.startDateTime).split(" ").join("T")
     const editmodalbody=(
         <div style={modalStyle} className={classes.paper}>
             <div className={classes.info}>
                 <div>
                     NFT Image<br/>
-                    <form>
-                        <input accept="image/*" className={classes.imginput} id="icon-button-file" type="file" name="nft" onChange={props.handleNFTimg} />
-                        <label htmlFor="icon-button-file">
-                            <img src={nft.nftimg} className={classes.img} alt="nftimg"/>
-                        </label>
-                    </form>
+                    <img src={nft.nftImageUrl} alt="nftImageUrl" className={classes.img}></img><br/>
                     <br/>
                     Detail Image<br/>
                     <form>
                         <input accept="image/*" className={classes.imginput} id="icon-button-file" type="file" name="detail" onChange={props.handleDetailimg} />
-                        <label htmlFor="icon-button-file">
-                            <img src={nft.detailImg} className={classes.img} alt="detailimg"/>
-                        </label>
                     </form>
                 </div>
                 <form noValidate autoComplete="off">
@@ -109,21 +105,22 @@ export default function NFTViewModal(props) {
                     onChange={props.handleNFTtitle}
                     className={classes.input}/><br/>
 
-                    <TextField 
-                    label="Name"
-                    defaultValue={nft.name}
-                    onChange={props.handleNFTname}
-                    className={classes.input}/><br/>
-
+                    
                     <TextField 
                     label="Sport"
-                    defaultValue={nft.sport}
+                    defaultValue={sportsInfo.name}
                     onChange={props.handleNFTsport}
+                    className={classes.input}/><br/>
+                    
+                    <TextField 
+                    label="Name"
+                    defaultValue={teamPlayerInfo.name}
+                    onChange={props.handleNFTplayer}
                     className={classes.input}/><br/>
 
                     <TextField 
                     label="Describtion"
-                    defaultValue={nft.describtion}
+                    defaultValue={nft.description}
                     onChange={props.handleNFTdescribe}
                     className={classes.input}/><br/>
 
@@ -135,8 +132,8 @@ export default function NFTViewModal(props) {
 
 
                     <TextField 
-                    label="Count"
-                    defaultValue={nft.count}
+                    label="remainedCount"
+                    defaultValue={nft.remainedCount}
                     onChange={props.handleNFTcount}
                     className={classes.input}/>
 
@@ -144,7 +141,7 @@ export default function NFTViewModal(props) {
                     id="datetime-local"
                     label="Start Date"
                     type="datetime-local"
-                    defaultValue={nft.startDate}
+                    defaultValue={editTime}
                     sx={{ width: 300 }}
                     InputLabelProps={{
                         shrink: true,

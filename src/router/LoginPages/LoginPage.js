@@ -11,8 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {mainColor} from '../../assets/colors'
 
-import {useDispatch} from 'react-redux'
-import {loginUser} from '../../_actions/user_action'
+import {admin} from '../../config'
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -46,37 +45,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function LoginPage({history}) {
+export default function LoginPage() {
   const classes = useStyles();
   const [email,setEmail] = useState("")
   const [password,setPassword] = useState("")
-
-  const dispatch = useDispatch()
   
   const handleClick = (e) =>{
     e.preventDefault()
-    console.log(email,password)
-
-    let body = {
-      email : email,
-      password : password
-    }
-
-    //dispatch(loginUser(body))
-    // .then(res=>{
-    //   if(res.payload.loginSuccess){
-    //     history.push("/home")
-    //   }
-    // })
-
-    //history.push("/home")
     
-
-    const type = dispatch(loginUser(body)).payload.type
-
-    if(type==='admin') history.push('/home')
+    if(admin.email===email && admin.password===password)
+      window.location.replace('/home')
     else alert("접근 권한이 없습니다.")
   }
+
   const handleEmail = (e) =>{
     setEmail(e.target.value)
   }
